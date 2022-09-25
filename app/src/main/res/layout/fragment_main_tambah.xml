@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
+    tools:context=".mainFragmentsAdmin.main_tambah">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Tambah data smartphone"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <EditText
+            android:id="@+id/ed_namasp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="Nama smartphone"/>
+        <EditText
+            android:id="@+id/ed_ram"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="RAM"/>
+        <EditText
+            android:id="@+id/ed_rom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="ROM"/>
+        <EditText
+            android:id="@+id/ed_chipset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="Chipset"/>
+        <EditText
+            android:id="@+id/ed_cpu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="CPU"/>
+        <EditText
+            android:id="@+id/ed_gpu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="GPU"/>
+        <EditText
+            android:id="@+id/ed_frontcam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="Kamera depan (MP)"/>
+        <EditText
+            android:id="@+id/ed_backcam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="Kamera belakang (MP)"/>
+        <EditText
+            android:id="@+id/ed_android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="Versi Android"/>
+
+        <Button
+            android:id="@+id/addnew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tambah data baru"/>
+    </LinearLayout>
+
+</FrameLayout>

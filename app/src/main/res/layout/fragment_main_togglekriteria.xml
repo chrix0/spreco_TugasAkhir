@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
+    tools:context=".mainFragmentsAdmin.main_togglekriteria">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="10"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:text="Toggle kriteria rekomendasi"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <Switch
+                android:id="@+id/switch_ram"
+                android:textSize="18dp"
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:text="RAM"/>
+            <Switch
+                android:id="@+id/switch_rom"
+                android:textSize="18dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ROM"/>
+            <Switch
+                android:id="@+id/switch_frontcam"
+                android:textSize="18dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kamera depan (MP)"/>
+            <Switch
+                android:id="@+id/switch_backcam"
+                android:textSize="18dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kamera belakang (MP)"/>
+            <Switch
+                android:id="@+id/switch_android"
+                android:textSize="18dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Versi Android"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="bottom"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/saveToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Simpan"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

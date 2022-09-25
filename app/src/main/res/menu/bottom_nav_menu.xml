@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_katalog_user"
+        android:icon="@drawable/iconbnb_listhp"
+        android:title="List" />
+
+    <item
+        android:id="@+id/menu_wishlist_user"
+        android:icon="@drawable/iconbnb_wish"
+        android:title="Wishlist" />
+
+    <item
+        android:id="@+id/menu_rekomendasi_user"
+        android:icon="@drawable/iconbnb_recommend"
+        android:title="Rekomendasi" />
+
+    <item
+        android:id="@+id/menu_about_user"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="Tentang" />
+
+</menu>
