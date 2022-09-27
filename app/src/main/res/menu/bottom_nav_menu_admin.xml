@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_list_admin"
+        android:icon="@drawable/iconbnb_listhp"
+        android:title="List" />
+
+    <item
+        android:id="@+id/menu_tambah_hp"
+        android:icon="@drawable/iconbnb_add"
+        android:title="Tambah" />
+
+    <item
+        android:id="@+id/menu_toggle_kriteria"
+        android:icon="@drawable/iconbnb_settings"
+        android:title="Toggle kriteria" />
+
+    <item
+        android:id="@+id/menu_about_admin"
+        android:icon="@drawable/iconbnb_about"
+        android:title="Tentang" />
+
+</menu>

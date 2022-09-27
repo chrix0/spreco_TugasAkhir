@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/menu_about_user"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/iconbnb_about"
         android:title="Tentang" />
 
 </menu>
