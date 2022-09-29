@@ -1,6 +1,11 @@
 package com.skripsi.spreco.classes
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class SP(
+    var id : Int,
     var nama : String,
     var harga : Int,
     var network : String,
@@ -17,5 +22,6 @@ data class SP(
     var selfieCam : Double,
     var battery : Int,
     var warna : String,
-    var score : Int
-)
+    var score : Int,
+    var picURL : String
+) : Parcelable
