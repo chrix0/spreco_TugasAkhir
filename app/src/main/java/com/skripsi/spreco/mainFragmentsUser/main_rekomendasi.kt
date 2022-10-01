@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.skripsi.spreco.R
 import com.skripsi.spreco.activityUser.user_recsettings
+import com.skripsi.spreco.activityUser.user_recshow
 
 class main_rekomendasi : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +27,13 @@ class main_rekomendasi : Fragment() {
 
     private fun code(v: View) : View{
         val rec_settings = v.findViewById<Button>(R.id.rec_settings)
+        val rec_show = v.findViewById<Button>(R.id.rec_show)
         rec_settings.setOnClickListener {
             var intent = Intent(requireContext(), user_recsettings::class.java)
+            startActivity(intent)
+        }
+        rec_show.setOnClickListener {
+            var intent = Intent(requireContext(), user_recshow::class.java)
             startActivity(intent)
         }
         return v

@@ -1,8 +1,10 @@
 package com.skripsi.spreco
 
 import com.skripsi.spreco.classes.SP
+import com.skripsi.spreco.classes.SP_rec
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.time.temporal.ValueRange
 
 object data {
     // Account auth
@@ -116,5 +118,89 @@ object data {
         var formatter : DecimalFormat = NumberFormat.getInstance() as DecimalFormat
         formatter.applyPattern("#,###")
         return formatter.format(harga)
+    }
+
+    fun convert_ke_nilai_kriteria(list : MutableList<SP>) : MutableList<SP_rec>{
+        var list_converted = mutableListOf<SP_rec>()
+        for (obj in list){
+            var converted = SP_rec()
+
+            //RAM
+            if ((obj.RAM <= 1))
+                converted.c_ram = 1.0
+            else if ((obj.RAM >= 2) and (obj.RAM <= 3))
+                converted.c_ram = 2.0
+            else if ((obj.RAM >= 4) and (obj.RAM <= 5))
+                converted.c_ram = 3.0
+            else if ((obj.RAM >= 6) and (obj.RAM <= 7))
+                converted.c_ram = 4.0
+            else
+                converted.c_ram = 5.0
+
+            //ROM
+            if (obj.ROM < 16)
+                converted.c_rom = 1.0
+            else if ((obj.ROM >= 16) and (obj.ROM <= 32))
+                converted.c_rom = 2.0
+            else if ((obj.ROM >= 33) and (obj.ROM <= 64))
+                converted.c_rom = 3.0
+            else if ((obj.ROM >= 65) and (obj.ROM <= 128))
+                converted.c_rom = 4.0
+            else
+                converted.c_rom = 5.0
+
+            //Battery
+            if (obj.battery < 3000)
+                converted.c_bat = 1.0
+            else if ((obj.battery >= 3000) and (obj.battery <= 3875))
+                converted.c_bat = 2.0
+            else if ((obj.battery >= 3876) and (obj.battery <= 4687))
+                converted.c_bat = 3.0
+            else if ((obj.battery >= 4688) and (obj.battery <= 5500))
+                converted.c_bat = 4.0
+            else
+                converted.c_bat = 5.0
+
+            //Main (Rear) Camera
+            if (obj.mainCam < 2)
+                converted.c_mainCam = 1.0
+            else if ((obj.mainCam >= 2) and (obj.mainCam <= 8))
+                converted.c_mainCam = 2.0
+            else if ((obj.mainCam >= 9) and (obj.mainCam <= 14))
+                converted.c_mainCam = 3.0
+            else if ((obj.mainCam >= 15) and (obj.mainCam <= 20))
+                converted.c_mainCam = 4.0
+            else
+                converted.c_mainCam = 5.0
+
+            //Selfie Camera
+            if (obj.selfieCam < 2)
+                converted.c_selfie = 1.0
+            else if ((obj.selfieCam >= 2) and (obj.selfieCam <= 8))
+                converted.c_selfie = 2.0
+            else if ((obj.selfieCam >= 9) and (obj.selfieCam <= 14))
+                converted.c_selfie = 3.0
+            else if ((obj.selfieCam >= 15) and (obj.selfieCam <= 20))
+                converted.c_selfie = 4.0
+            else
+                converted.c_selfie = 5.0
+
+            //Harga
+            if (obj.harga < 1000000)
+                converted.c_harga = 5.0
+            else if ((obj.harga >= 1000001) and (obj.harga <= 2000000))
+                converted.c_harga = 4.0
+            else if ((obj.harga >= 2000001) and (obj.harga <= 3000000))
+                converted.c_harga = 3.0
+            else if ((obj.harga >= 3000001) and (obj.harga <= 4000000))
+                converted.c_harga = 2.0
+            else
+                converted.c_harga = 1.0
+
+            list_converted.add(converted)
+        }
+        print(list_converted.toString())
+        return list_converted
+
     }
 }
