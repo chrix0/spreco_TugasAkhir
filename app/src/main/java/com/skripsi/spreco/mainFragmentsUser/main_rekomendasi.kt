@@ -7,9 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.core.app.ShareCompat
 import com.skripsi.spreco.R
+import com.skripsi.spreco.activityUser.user_rechistory
 import com.skripsi.spreco.activityUser.user_recsettings
 import com.skripsi.spreco.activityUser.user_recshow
+import com.skripsi.spreco.activityUser.user_toggleKriteria
+import com.skripsi.spreco.data
+import com.skripsi.spreco.data.caraHitung
+import kotlinx.android.synthetic.main.activity_user_recsettings_history.*
 
 class main_rekomendasi : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +35,22 @@ class main_rekomendasi : Fragment() {
     private fun code(v: View) : View{
         val rec_settings = v.findViewById<Button>(R.id.rec_settings)
         val rec_show = v.findViewById<Button>(R.id.rec_show)
+        val rec_history = v.findViewById<Button>(R.id.rec_history)
         rec_settings.setOnClickListener {
-            var intent = Intent(requireContext(), user_recsettings::class.java)
+            var intent = Intent(requireContext(), user_toggleKriteria::class.java)
             startActivity(intent)
         }
         rec_show.setOnClickListener {
-            var intent = Intent(requireContext(), user_recshow::class.java)
+            if (data.settingDone){ //PERBAIKI INI
+                var intent = Intent(requireContext(), user_recshow::class.java)
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(requireContext(),"Anda harus melakukan Step 1 terlebih dahulu.", Toast.LENGTH_LONG).show()
+            }
+        }
+        rec_history.setOnClickListener {
+            var intent = Intent(requireContext(), user_rechistory::class.java)
             startActivity(intent)
         }
         return v

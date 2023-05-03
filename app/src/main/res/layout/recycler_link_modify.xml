@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grey"
+    android:padding="10dp"
+    android:weightSum="10"
+    android:clickable="true"
+    android:layout_marginBottom="10dp">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/namaLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Website A"/>
+        <TextView
+            android:id="@+id/urlProduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LINK URL"/>
+        <TextView
+            android:id="@+id/tglBuatLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tanggal Tambah: DD-MM-YYY "/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_delete"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:clickable="true"
+            android:id="@+id/deleteLink"/>
+    </LinearLayout>
+</LinearLayout>

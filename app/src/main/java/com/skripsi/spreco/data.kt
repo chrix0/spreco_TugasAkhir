@@ -1,20 +1,26 @@
 package com.skripsi.spreco
 
-import com.skripsi.spreco.classes.SP
-import com.skripsi.spreco.classes.SP_rec
+import android.content.Context
+import android.content.Intent
+import androidx.room.Room
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.skripsi.spreco.RoomDB.DBHelper
+import com.skripsi.spreco.classes.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.time.temporal.ValueRange
 
 object data {
     // Account auth
-    var curRole = "u"
+    var curRole : Char = 'u'
+    var currentAccId : Int = -1
 
     //List data
-    var list_sp : MutableList<SP> = mutableListOf(
-        SP(
+    var list_sp : MutableList<Smartphone> = mutableListOf(
+        Smartphone(
             1,
             "Infinix Smart 6 Plus (3/64)",
+            "Infinix",
             1139000,
             "GSM / HSPA / LTE",
             "Dual SIM (Nano-SIM, dual stand-by)",
@@ -30,12 +36,13 @@ object data {
             5.0,
             5000,
             "Tranquil Sea Blue, Miracle Black",
-            3242,
+            "",
             "https://fdn2.gsmarena.com/vv/bigpic/infinix-smart-6-plus.jpg"
         ),
-        SP(
+        Smartphone(
             2,
             "Xiaomi Redmi Note 11 Pro (6/64)",
+            "Xiaomi",
             3449000,
             "GSM / HSPA / LTE",
             "Hybrid Dual SIM (Nano-SIM, dual stand-by)",
@@ -51,12 +58,13 @@ object data {
             16.0,
             5000,
             "Graphite Gray (Stealth Black), Polar White (Phantom White), Star Blue",
-            8209,
+            "",
             "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-11-pro-global.jpg"
         ),
-        SP(
+        Smartphone(
             3,
             "Xiaomi Redmi K20 Pro (6/64)",
+            "Xiaomi",
             4999000,
             "GSM / HSPA / LTE",
             "Dual SIM (Nano-SIM, dual stand-by)",
@@ -70,12 +78,13 @@ object data {
             48.0, 20.0,
             4000,
             "Carbon black, Flame red, Glacier blue, Summer Honey, Pearl White",
-            8621,
+            "",
             "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-k20pro-.jpg"
         ),
-        SP(
+        Smartphone(
             4,
             "Xiaomi Redmi Note 5 (3/32)",
+            "Xiaomi",
             1899000,
             "GSM / HSPA / LTE",
             "Hybrid Dual SIM (Nano-SIM, dual stand-by)",
@@ -89,12 +98,13 @@ object data {
             12.0, 5.0,
             4000,
             "Black, Gold, Blue, Rose Gold",
-            4124,
+            "",
             "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-5-plus.jpg"
         ),
-        SP(
+        Smartphone(
             5,
             "Xiaomi Redmi 6A (2/16)",
+            "Xiaomi",
             1200000,
             "GSM / CDMA / HSPA / LTE",
             "Dual SIM (Nano-SIM, dual stand-by)",
@@ -108,10 +118,27 @@ object data {
             13.0, 5.0,
             3000,
             "Black, Gold, Blue, Rose Gold",
-            1104,
+            "",
             "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-6a.jpg"
         )
     )
+    //temp acc
+    var listAcc : List<Account> = listOf(
+        Account(1, "TEST ADMIN", "ADM", "ADM" )
+    )
+
+    //temp source
+    var listSps : List<SPSource> = listOf(
+    )
+
+    //temp ctoggle
+    var listToggle : List<ChosenCriteria> = listOf(
+        ChosenCriteria(1, "ram", 'b'),
+        ChosenCriteria(1, "rom", 'b')
+    )
+
+    //pcm
+    var pcm : MutableList<MutableList<Double>> =  mutableListOf()
 
     //Methods
     fun formatHarga(harga : Int) : String{
@@ -120,87 +147,61 @@ object data {
         return formatter.format(harga)
     }
 
-    fun convert_ke_nilai_kriteria(list : MutableList<SP>) : MutableList<SP_rec>{
-        var list_converted = mutableListOf<SP_rec>()
-        for (obj in list){
-            var converted = SP_rec()
+    var caraHitung = "HITUNGAN FAHP-WASPAS\n "
 
-            //RAM
-            if ((obj.RAM <= 1))
-                converted.c_ram = 1.0
-            else if ((obj.RAM >= 2) and (obj.RAM <= 3))
-                converted.c_ram = 2.0
-            else if ((obj.RAM >= 4) and (obj.RAM <= 5))
-                converted.c_ram = 3.0
-            else if ((obj.RAM >= 6) and (obj.RAM <= 7))
-                converted.c_ram = 4.0
-            else
-                converted.c_ram = 5.0
+    //ROOM DB
+    fun getRoomHelper(context: Context): DBHelper {
+        return Room.databaseBuilder(context, DBHelper::class.java, "SPRecommender.db")
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
+            .build()
+    }
 
-            //ROM
-            if (obj.ROM < 16)
-                converted.c_rom = 1.0
-            else if ((obj.ROM >= 16) and (obj.ROM <= 32))
-                converted.c_rom = 2.0
-            else if ((obj.ROM >= 33) and (obj.ROM <= 64))
-                converted.c_rom = 3.0
-            else if ((obj.ROM >= 65) and (obj.ROM <= 128))
-                converted.c_rom = 4.0
-            else
-                converted.c_rom = 5.0
+    // Rekomendasi
+    var criteriaList = mutableMapOf( //Secara default, semua kriteria bernilai false
+        "RAM" to false,
+        "ROM" to false,
+        "Kapasitas baterai" to false,
+        "Kamera belakang" to false,
+        "Kamera depan" to false,
+        "Ukuran layar" to false,
+        "Harga" to false
+    )
+    var settingDone = false
+    var enabledCriteria = mutableListOf<String>()
+    var enabledCriteriaType = mutableListOf<Char>()
 
-            //Battery
-            if (obj.battery < 3000)
-                converted.c_bat = 1.0
-            else if ((obj.battery >= 3000) and (obj.battery <= 3875))
-                converted.c_bat = 2.0
-            else if ((obj.battery >= 3876) and (obj.battery <= 4687))
-                converted.c_bat = 3.0
-            else if ((obj.battery >= 4688) and (obj.battery <= 5500))
-                converted.c_bat = 4.0
-            else
-                converted.c_bat = 5.0
+    var filterHargaChecked = false //Temporary. Hanya pengaturan toggle kriteria yang disimpan
+    var hargaRangeAtas = -1
+    var hargaRangeBawah = -1
+    var maxDataRec = 0
 
-            //Main (Rear) Camera
-            if (obj.mainCam < 2)
-                converted.c_mainCam = 1.0
-            else if ((obj.mainCam >= 2) and (obj.mainCam <= 8))
-                converted.c_mainCam = 2.0
-            else if ((obj.mainCam >= 9) and (obj.mainCam <= 14))
-                converted.c_mainCam = 3.0
-            else if ((obj.mainCam >= 15) and (obj.mainCam <= 20))
-                converted.c_mainCam = 4.0
-            else
-                converted.c_mainCam = 5.0
+    var bobotKriteria = mutableMapOf<String, Double>()
 
-            //Selfie Camera
-            if (obj.selfieCam < 2)
-                converted.c_selfie = 1.0
-            else if ((obj.selfieCam >= 2) and (obj.selfieCam <= 8))
-                converted.c_selfie = 2.0
-            else if ((obj.selfieCam >= 9) and (obj.selfieCam <= 14))
-                converted.c_selfie = 3.0
-            else if ((obj.selfieCam >= 15) and (obj.selfieCam <= 20))
-                converted.c_selfie = 4.0
-            else
-                converted.c_selfie = 5.0
+    //GSON
+    fun serialize(matriks : MutableList<MutableList<Double>>) : String{
+        val gson = Gson()
+        return gson.toJson(matriks)
+    }
 
-            //Harga
-            if (obj.harga < 1000000)
-                converted.c_harga = 5.0
-            else if ((obj.harga >= 1000001) and (obj.harga <= 2000000))
-                converted.c_harga = 4.0
-            else if ((obj.harga >= 2000001) and (obj.harga <= 3000000))
-                converted.c_harga = 3.0
-            else if ((obj.harga >= 3000001) and (obj.harga <= 4000000))
-                converted.c_harga = 2.0
-            else
-                converted.c_harga = 1.0
+    fun deserialize(jsonMatriks : String) : MutableList<MutableList<Double>>{
+        val gson = Gson()
+        val itemType = object : TypeToken<MutableList<MutableList<Double>>>() {}.type
+        return gson.fromJson(jsonMatriks, itemType)
+    }
 
-            list_converted.add(converted)
-        }
-        print(list_converted.toString())
-        return list_converted
+    fun serializeHistory(data : MutableList<SP_rank>) : String{
+        val gson = Gson()
+        return gson.toJson(data)
+    }
 
+    fun deserializeHistory(json : String) : MutableList<SP_rank>{
+        val gson = Gson()
+        val itemType = object : TypeToken<MutableList<SP_rank>>() {}.type
+        return gson.fromJson(json, itemType)
+    }
+
+    fun Intent.clearStack() {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     }
 }

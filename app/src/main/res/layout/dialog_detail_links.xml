@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Link Pembelian"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="80">
+        <TextView
+            android:id="@+id/nothing_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Tidak ada link pembelian untuk smartphone ini."
+            android:gravity="center_horizontal|center_vertical"
+            android:visibility="gone"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbarAlwaysDrawVerticalTrack="true">
+            <androidx.recyclerview.widget.RecyclerView
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:id="@+id/links"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </ScrollView>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tutup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tutup"
+        android:layout_gravity="right"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:clickable="true"/>
+
+    <!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/namaLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Website A"/>
+        <TextView
+            android:id="@+id/tglBuatLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tanggal Tambah: DD-MM-YYY "/>
+    </LinearLayout>
+    -->
+
+</LinearLayout>

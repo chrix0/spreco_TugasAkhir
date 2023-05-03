@@ -1,32 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:weightSum="100"
-    android:orientation="vertical"
     tools:context=".activityUser.user_recsettings">
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="Mohon isi semua field dengan skala 1 - 9."
-        android:layout_marginBottom="10dp" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="97"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideOverlay">
-        <androidx.recyclerview.widget.RecyclerView
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp"
-            android:id="@+id/questionList"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical">
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </ScrollView>
-</LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="Untuk mendapatkan rekomendasi yang sesuai untuk Anda, silahkan jawab beberapa pertanyaan berikut."
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:id="@+id/askCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pertanyaan 1 dari {jumlah total pertanyaan}."
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/qText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Menurut Anda, seberapa penting {K1} smartphone daripada {K2} smartphone?" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="100dp">
+            <Button
+                android:id="@+id/p1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="Sangat tidak penting"/>
+            <Button
+                android:id="@+id/p2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="Kurang penting" />
+            <Button
+                android:id="@+id/p3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="Sama penting" />
+            <Button
+                android:id="@+id/p4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="Lebih penting" />
+            <Button
+                android:id="@+id/p5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="Sangat penting" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -7,7 +7,8 @@
     android:padding="20dp"
     android:weightSum="100"
     android:orientation="vertical"
-    tools:context=".activityUser.user_recshow">
+    tools:context=".activityUser.user_recshow"
+    android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,13 +44,18 @@
                 android:src="@drawable/icon_sort" />
         </RelativeLayout>
     </LinearLayout>
-
     <Button
-        android:id="@+id/filter_harga"
+        android:id="@+id/last_settings"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:text="Filter harga"/>
+        android:layout_height="wrap_content"
+        android:text="Lihat pengaturan rekomendasi" />
+
+    <TextView
+        android:id="@+id/shownCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Jumlah data: {data yang muncul}"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -74,18 +80,32 @@
             android:background="@color/grey" />
     </LinearLayout>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="74"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideOverlay">
-        <androidx.recyclerview.widget.RecyclerView
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp"
-            android:id="@+id/rankingList"
+        android:layout_weight="72">
+        <TextView
+            android:id="@+id/nothing_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </ScrollView>
+            android:layout_height="match_parent"
+            android:text="Tidak ada produk yang dapat direkomendasikan."
+            android:gravity="center_horizontal|center_vertical"
+            android:visibility="gone"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:scrollbarStyle="outsideOverlay">
+            <androidx.recyclerview.widget.RecyclerView
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:id="@+id/rankingList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"/>
+        </ScrollView>
+    </FrameLayout>
+
+
 </LinearLayout>

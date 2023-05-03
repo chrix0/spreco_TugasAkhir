@@ -24,7 +24,7 @@ class MainActivityUser : AppCompatActivity() {
         val navController = findNavController(R.id.fragmentContainerView)
         navBottom.setupWithNavController(navController)
 
-        if(data.curRole == "user"){
+        if(data.curRole == 'C'){
             navBottom.menu.clear();
             navBottom.inflateMenu(R.menu.bottom_nav_menu)
 
@@ -50,8 +50,20 @@ class MainActivityUser : AppCompatActivity() {
                         false
                 }
             }
+
+            var intentData = intent
+            if (intentData.hasExtra(RETURN_LAST_TAB)){
+                when(intentData.getStringExtra(RETURN_LAST_TAB)){
+                    "REC" -> {
+                        navBottom.selectedItemId = R.id.menu_rekomendasi_user
+                    }
+                    "PRO" -> {
+                        navBottom.selectedItemId = R.id.menu_about_user
+                    }
+                }
+            }
         }
-        else if(data.curRole == "admin"){
+        else if(data.curRole == 'A'){
             navBottom.menu.clear();
             navBottom.inflateMenu(R.menu.bottom_nav_menu_admin)
 
@@ -65,8 +77,8 @@ class MainActivityUser : AppCompatActivity() {
                         navController.navigate(R.id.nav_tambah)
                         true
                     }
-                    R.id.menu_toggle_kriteria -> {
-                        navController.navigate(R.id.nav_togglekriteria)
+                    R.id.menu_manage_customer -> {
+                        navController.navigate(R.id.nav_kelola_customer)
                         true
                     }
                     R.id.menu_about_admin -> {

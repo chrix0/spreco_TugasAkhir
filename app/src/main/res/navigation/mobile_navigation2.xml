@@ -33,9 +33,10 @@
         android:name="com.skripsi.spreco.mainFragmentsAdmin.main_tambah"
         android:label="fragment_main_tambah"
         tools:layout="@layout/fragment_main_tambah" />
+
     <fragment
-        android:id="@+id/nav_togglekriteria"
-        android:name="com.skripsi.spreco.mainFragmentsAdmin.main_togglekriteria"
-        android:label="fragment_main_togglekriteria"
-        tools:layout="@layout/fragment_main_togglekriteria" />
+        android:id="@+id/nav_kelola_customer"
+        android:name="com.skripsi.spreco.mainFragmentsAdmin.main_manageCustomer"
+        android:label="fragment_main_manage_customer"
+        tools:layout="@layout/fragment_main_manage_customer" />
 </navigation>

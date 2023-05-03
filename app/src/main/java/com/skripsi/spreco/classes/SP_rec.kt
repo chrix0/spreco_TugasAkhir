@@ -1,5 +1,5 @@
 package com.skripsi.spreco.classes
-
+//score blm dimasukkan..??
 data class SP_rec(
     var id : Int? = null,
     var nama : String? = null,
@@ -8,5 +8,6 @@ data class SP_rec(
     var c_bat : Double? = null,
     var c_mainCam : Double? = null,
     var c_selfie : Double? = null,
+    var c_layar : Double? = null,
     var c_harga : Double? = null,
 )

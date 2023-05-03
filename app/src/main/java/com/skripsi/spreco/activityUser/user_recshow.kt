@@ -1,15 +1,60 @@
+@file:Suppress("DEPRECATION")
+
 package com.skripsi.spreco.activityUser
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.ProgressDialog
+import android.content.Context
+import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Parcelable
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.PopupMenu
 import android.widget.Toast
-import com.skripsi.spreco.R
-import com.skripsi.spreco.data
-import com.skripsi.spreco.fahp_waspas
-import com.skripsi.spreco.fahp_waspas.FAHP
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.skripsi.spreco.*
+import com.skripsi.spreco.classes.SP_rank
+import com.skripsi.spreco.classes.SP_rec
+import com.skripsi.spreco.classes.Smartphone
+import com.skripsi.spreco.classes.recHistory
+import com.skripsi.spreco.data.currentAccId
+import com.skripsi.spreco.data.filterHargaChecked
+import com.skripsi.spreco.data.hargaRangeAtas
+import com.skripsi.spreco.data.hargaRangeBawah
+import com.skripsi.spreco.data.list_sp
+import com.skripsi.spreco.data.maxDataRec
 import com.skripsi.spreco.fahp_waspas.FAHP_WASPAS
+import com.skripsi.spreco.fahp_waspas.makeRanking
+import com.skripsi.spreco.mainFragmentsUser.filter
+import com.skripsi.spreco.recyclerAdapters.recycler_recshow_adapter
+import com.skripsi.spreco.recyclerAdapters.recycler_sp_adapter
+import kotlinx.android.synthetic.main.activity_user_recshow.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jetbrains.anko.doAsync
+import java.text.SimpleDateFormat
+import java.util.*
+
+
+var convert : MutableList<SP_rec> = mutableListOf() //PCM yang telah diubah ke TFN
+var hitung : MutableList<Double> = mutableListOf() //Berisi hasil perhitungan FAHP-WASPAS (Skor setiap data smartphone)
+var hasil : MutableList<SP_rank> = mutableListOf() //Berisi daftar ranking smartphone
+var pcm : MutableList<MutableList<Double>> = mutableListOf() //Berisi PCM
+lateinit var obj_history : recHistory
+
+var perluFilterHarga = false
+
+lateinit var adapter : recycler_recshow_adapter
 
 class user_recshow : AppCompatActivity() {
+    var temp : MutableList<SP_rank> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_recshow)
@@ -18,53 +63,205 @@ class user_recshow : AppCompatActivity() {
         actionbar!!.title = "Rekomendasi"
         actionbar.setDisplayHomeAsUpEnabled(true)
 
-        var pcm : MutableList<MutableList<Double>> =
-            mutableListOf(
-                mutableListOf(1.0, 2.0, 1.0/2.0, 1.0/4.0, 4.0, 2.0),
-                mutableListOf(0.0, 1.0, 3.0, 1.0/5.0, 2.0, 3.0),
-                mutableListOf(0.0, 0.0, 1.0, 2.0, 1.0/3.0, 3.0),
-                mutableListOf(0.0, 0.0, 0.0, 1.0, 4.0, 4.0),
-                mutableListOf(0.0, 0.0, 0.0, 0.0, 1.0, 5.0),
-                mutableListOf(0.0, 0.0, 0.0, 0.0, 0.0, 1.0)
-            )
+        //Kalau tampilan ini dibuka melalui halaman riwayat rekomendasi..
+        if (intent.hasExtra(SHOW_RECOMMENDED)){
+            obj_history = intent.getParcelableExtra<Parcelable>(SHOW_RECOMMENDED) as recHistory
+            val typeTokenHistory = object : TypeToken<MutableList<SP_rank>>() {}.type
+            hasil = Gson().fromJson(obj_history.result, typeTokenHistory)
+            temp.addAll(hasil)
+            if(hasil.isEmpty()){
+                nothing_text.text = "Tidak ada produk yang dapat direkomendasikan."
+                nothing_text.visibility = View.VISIBLE
+            }
+            shownCount.text = "Jumlah data: ${hasil.size}"
+            adapter = recycler_recshow_adapter(hasil){
+                val info = Intent(this, user_spdetail::class.java)
+                info.putExtra(SHOW_PRODUCT_INFO, it.obj_sp as Parcelable) //Tampilkan detail untuk smartphone yang dipilih
+                startActivity(info)
+            }
+            rankingList.layoutManager = LinearLayoutManager(this@user_recshow)
+            rankingList.adapter = adapter
+        }
+        else{ //Jika dari menekan tombol Tampilkan Rekomendasi dari Menu Rekomendasi
+            Async().execute()
+        }
 
-        var criteriaLabel : MutableList<String> = mutableListOf("C1", "C2", "C3", "C4", "C5", "C6")
-        var pcmInput : MutableList<MutableList<Double>> = mutableListOf()
-        var allFilled = true
-        //Input Check
-        for (i in 0 until pcm.size){
-            for(j in 0..i){
-                if(i != j){
-                    if(!pcm[j][i].equals(0.0)){
-                        print("Sudah diinput : ${criteriaLabel[j]} dengan ${criteriaLabel[i]} = ${pcm[j][i]}\n")
-                    }
-                    else{
-                        print("Belum diinput : ${criteriaLabel[j]} dengan ${criteriaLabel[i]}\n")
-                        allFilled = false
-                    }
+        last_settings.setOnClickListener {
+            val info = Intent(this, user_recsettings_history::class.java)
+            info.putExtra(SHOW_PAST_REC_SETTINGS, obj_history as Parcelable)
+            startActivity(info)
+        }
+
+        search.setOnEditorActionListener { _, i, _ ->
+            if (i == EditorInfo.IME_ACTION_DONE){
+                temp.clear()
+                temp.addAll(filter(search.text.toString(), hasil))
+                if(hasil.isEmpty()){
+                    nothing_text.text = "Data smartphone tidak ditemukan."
+                    nothing_text.visibility = View.VISIBLE
                 }
+                adapter = recycler_recshow_adapter(temp){
+                    val info = Intent(this, user_spdetail::class.java)
+                    info.putExtra(SHOW_PRODUCT_INFO, it.obj_sp as Parcelable) //Tampilkan detail untuk smartphone yang dipilih
+                    startActivity(info)
+                }
+                rankingList.adapter = adapter
+            }
+            return@setOnEditorActionListener true
+        }
+
+        // Tombol sort
+        var popup = PopupMenu(this, sortButton)
+        popup.menuInflater.inflate(R.menu.menu_sort_rec, popup.menu)
+        sortButton.setOnClickListener{
+            popup.show()
+        }
+
+        fun showModifiedRec(temp : List<SP_rank>){
+            adapter = recycler_recshow_adapter(temp){
+                val info = Intent(this, user_spdetail::class.java)
+                info.putExtra(SHOW_PRODUCT_INFO, it.obj_sp as Parcelable) //Tampilkan detail untuk smartphone yang dipilih
+                startActivity(info)
+            }
+            rankingList.adapter = adapter
+
+            if(temp.isEmpty()){
+                nothing_text.visibility = View.VISIBLE
             }
         }
 
-
-        if(allFilled){
-            print("Semua sudah diinput!\n")
-            print("Bobot setiap kriteria setelah perhitungan FAHP: " + FAHP(pcm).toString() + "\n")
-            print("Jumlah bobot: " + FAHP(pcm).sumOf{it}.toString() + "\n")
-            print("Hasil ranking: ")
-            var list_converted = data.convert_ke_nilai_kriteria(data.list_sp)
-            var resFAHPWASPAS = FAHP_WASPAS(list_converted, pcm)
-            var res = fahp_waspas.makeRanking(data.list_sp, resFAHPWASPAS)
-            Toast.makeText(this, res.toString(), Toast.LENGTH_LONG).show()
-        }
-        else{
-            Toast.makeText(this,"Terdapat elemen yang masih bernilai 0", Toast.LENGTH_LONG).show()
+        popup.setOnMenuItemClickListener {
+            return@setOnMenuItemClickListener when(it.itemId){
+                R.id.harga_des->{
+                    temp.sortBy { it.obj_sp.harga }
+                    temp.reverse()
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.harga_asc ->{
+                    temp.sortBy { it.obj_sp.harga }
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.nama_des->{
+                    temp.sortBy { it.obj_sp.namaSP }
+                    temp.reverse()
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.nama_asc ->{
+                    temp.sortBy { it.obj_sp.namaSP }
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.rank_des -> {
+                    temp.sortBy { it.rank }
+                    temp.reverse()
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.rank_asc -> {
+                    temp.sortBy { it.rank }
+                    showModifiedRec(temp)
+                    true
+                }
+                else -> false
+            }
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        //onBackPressed() deprecated, jadi perlu menggunakan onBackPressedDispatcher.onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
+    fun getCurrentDateTime():String{
+        val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+        return sdf.format(Date())
+    }
+
+    fun filter(searchText: String, list: MutableList<SP_rank>): MutableList<SP_rank> {
+        var res = list.filter{it.obj_sp.namaSP.contains(searchText, ignoreCase = true)}.toMutableList()
+        return res
+    }
+
+    inner class Async : AsyncTask<Void, Void, Unit>(){
+        //Beri tahu user bahwa rekomendasi sedang diproses..
+        var dialog = ProgressDialog(this@user_recshow).apply {
+            setMessage("Rekomendasi Anda sedang diproses.\nMohon tunggu.")
+            setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            setCancelable(false)
+        }
+        override fun doInBackground(vararg p0: Void?): Unit? {
+            convert = fahp_waspas.convert_ke_nilai_kriteria(list_sp)
+            hitung = FAHP_WASPAS(convert, pcm)
+            hasil = makeRanking(list_sp, hitung).take(data.maxDataRec).toMutableList()
+            return null
+        }
+        override fun onPreExecute() {
+            super.onPreExecute()
+            pcm = data.pcm
+            dialog.show()
+        }
+        override fun onPostExecute(result: Unit?) {
+            super.onPostExecute(result)
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
+            //Jika checkbox filter harga pada halaman sebelumnya dicentang..
+            perluFilterHarga = filterHargaChecked
+            if(filterHargaChecked){
+                Toast.makeText(this@user_recshow,"${hargaRangeBawah}, $hargaRangeAtas", Toast.LENGTH_LONG).show()
+                hasil = hasil.filter {
+                    (it.obj_sp.harga >= hargaRangeBawah) and (it.obj_sp.harga <= hargaRangeAtas)
+                }.toMutableList()
+            }
+
+            temp.addAll(hasil)
+
+            if(hasil.isEmpty()){
+                nothing_text.text = "Tidak ada produk yang dapat direkomendasikan."
+                nothing_text.visibility = View.VISIBLE
+            }
+
+            var db = data.getRoomHelper(applicationContext)
+            adapter = recycler_recshow_adapter(hasil){
+                val info = Intent(this@user_recshow, user_spdetail::class.java)
+                info.putExtra(SHOW_PRODUCT_INFO, it.obj_sp as Parcelable) //Tampilkan detail untuk smartphone yang dipilih
+                startActivity(info)
+            }
+
+            shownCount.text = "Jumlah data: ${hasil.size}"
+
+            //Cek hitungan. Hapus jika tidak perlu
+            val mimeType = "text/plain"
+            ShareCompat.IntentBuilder
+                .from(this@user_recshow)
+                .setType(mimeType)
+                .setChooserTitle("Untuk periksa perhitungan saja. Dialog ini akan dihapus.")
+                .setText(data.caraHitung)
+                .startChooser()
+
+            rankingList.layoutManager = LinearLayoutManager(this@user_recshow)
+            rankingList.adapter = adapter
+
+            var hasilToJSON= Gson().toJson(hasil)
+            var bobotKriteriaToJSON = Gson().toJson(data.bobotKriteria)
+            var pcmJSON = Gson().toJson(data.pcm)
+            obj_history = recHistory(0, currentAccId, hasilToJSON, getCurrentDateTime(), hargaRangeBawah, hargaRangeAtas, maxDataRec, bobotKriteriaToJSON, pcmJSON)
+            db.daoRecHistory().addHistory(obj_history) //Simpan ke RecHistory
+
+            //Reset..
+            data.enabledCriteria = mutableListOf<String>()
+            data.enabledCriteriaType = mutableListOf<Char>()
+            data.filterHargaChecked = false //Temporary. Hanya pengaturan toggle kriteria yang disimpan
+            data.hargaRangeAtas = -1
+            data.hargaRangeBawah = -1
+            data.maxDataRec = 0
+            data.bobotKriteria = mutableMapOf<String, Double>()
+            data.settingDone = false
+        }
+    }
 }
+

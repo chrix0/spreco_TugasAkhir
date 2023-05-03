@@ -16,12 +16,25 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:layout_weight="85">
+            android:layout_weight="80">
+            <TextView
+                android:id="@+id/greet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Halo, {nama lengkap}"
+                android:layout_marginBottom="10dp" />
+            <TextView
+                android:id="@+id/tellRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Anda sedang login sebagai {role}."
+                android:layout_marginBottom="10dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tentang"
                 android:layout_marginBottom="10dp"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -36,11 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:layout_weight="15">
-            <TextView
-                android:layout_width="wrap_content"
+            android:layout_weight="20">
+            <Button
+                android:id="@+id/profileEdit"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ID yang sedang login: Nama (Role)"/>
+                android:text="Edit data akun"/>
             <Button
                 android:id="@+id/logout"
                 android:layout_width="match_parent"

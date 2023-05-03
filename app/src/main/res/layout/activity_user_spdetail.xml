@@ -5,32 +5,44 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-android:padding="25dp"
 tools:context=".activityUser.user_spdetail">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="25dp"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/productImg"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:src="@drawable/test_dog" />
-
+            android:layout_height="250dp"
+            android:src="@drawable/test_dog"
+            android:layout_marginBottom="20dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/name"
+            android:orientation="horizontal"
+            android:weightSum="10">
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="TEST DOGGO INI BUKAN HP EHEHE"
-                android:textSize="15sp"
+                android:orientation="vertical"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold"
-                android:layout_weight="9"/>
+                android:layout_weight="9">
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Produk (Sementara pakai test doggo yang udh nemanin kita selama setahun. Tentunya si good boi ini tidak untuk dijual. Semoga kita lulus sidang :D )"
+                    android:textSize="15sp"
+                    android:layout_gravity="top"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rp.??? "
+                    android:textSize="15sp" />
+            </LinearLayout>
 
             <ToggleButton
                 android:id="@+id/addToWish"
@@ -42,15 +54,6 @@ tools:context=".activityUser.user_spdetail">
                 android:textOn=""
                 android:textOff="" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rp.???,-"
-            android:textSize="15sp" />
-
-
 
         <TextView
             android:id="@+id/specsTitle"
@@ -67,23 +70,20 @@ tools:context=".activityUser.user_spdetail">
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_weight="0.3"
             android:background="@color/grey" />
 
-        <ScrollView
-            android:id="@+id/specs"
+        <TextView
+            android:id="@+id/specText"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@id/title_info"
-            android:layout_weight="30"
-            android:scrollbars="vertical">
+            android:layout_height="wrap_content"
+            android:text="Isinya poin-poin spesifikasi. Bisa discroll."
+            android:textSize="13sp" />
 
-            <TextView
-                android:id="@+id/specText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Why painful the sixteen how minuter looking nor. Subject but why ten earnest husband imagine sixteen brandon. Are unpleasing occasional celebrated motionless unaffected conviction out. Evil make to no five they. Stuff at avoid of sense small fully it whose an. Ten scarcely distance moreover handsome age although. As when have find fine or said no mile. He in dispatched in imprudence dissimilar be possession unreserved insensible. She evil face fine calm have now. Separate screened he outweigh of distance landlord."
-                android:textSize="13sp" />
-        </ScrollView>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lihat link pembelian"
+            android:id="@+id/showSource"
+            android:layout_marginTop="15dp"/>
     </LinearLayout>
 </ScrollView>

@@ -5,6 +5,10 @@ import java.util.*
 const val EXTRA_PRODUCT = "com.skripsi.spreco.FOOD_PRODUCT"
 const val CHANGE_TITLE = "com.skripsi.spreco.CHANGE"
 const val SHOW_PRODUCT_INFO = "com.skripsi.spreco.PRODUCT_INFO"
+const val SHOW_RECOMMENDED = "com.skripsi.spreco.SHOW_PRODUCT_INFO"
+const val SHOW_PAST_REC_SETTINGS = "com.skripsi.spreco.SHOW_PAST_REC_SETTINGS"
+const val SHOW_SPDATA_TO_EDIT = "com.skripsi.spreco.SHOW_SPDATA_TO_EDIT"
+
 const val ADD_TO_CART = "com.skripsi.spreco.CART"
 const val CHECKOUT = "com.skripsi.spreco.CHECKOUT"
 const val RETURN_LAST_TAB = "com.skripsi.spreco.LAST_TAB"
@@ -32,3 +36,4 @@ const val ACTION_PLAY = "PLAY"
 const val ACTION_STOP = "STOP"
 const val ACTION_CREATE = "CREATE"
 const val ACTION_PAUSE = "PAUSE"
+

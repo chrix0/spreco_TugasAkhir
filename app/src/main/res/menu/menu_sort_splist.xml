@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/harga_asc"
+        android:title="Harga (Menaik)"/>
+    <item
+        android:id="@+id/harga_des"
+        android:title="Harga (Menurun)"/>
+    <item
+        android:id="@+id/nama_asc"
+        android:title="Nama (Menaik)"/>
+    <item
+        android:id="@+id/nama_des"
+        android:title="Nama (Menurun)"/>
+</menu>

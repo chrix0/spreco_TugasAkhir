@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.skripsi.spreco.R
-import com.skripsi.spreco.classes.SP
+import com.skripsi.spreco.classes.Smartphone
 import com.skripsi.spreco.data
 import com.squareup.picasso.Picasso
 
-class recycler_sp_adapter(data : List<SP>,
-                          private val clickListener: (SP) -> Unit) : RecyclerView.Adapter<recycler_sp_adapter.myHolder>() {
+class recycler_sp_adapter(data : List<Smartphone>,
+                          private val clickListener: (Smartphone) -> Unit) : RecyclerView.Adapter<recycler_sp_adapter.myHolder>() {
 
     private var myData = data
     class myHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -30,7 +30,7 @@ class recycler_sp_adapter(data : List<SP>,
     }
 
     override fun onBindViewHolder(holder: myHolder, position: Int) {
-        holder.nama.text = myData[position].nama
+        holder.nama.text = myData[position].namaSP
         holder.harga.text = "Rp." + data.formatHarga(myData[position].harga)
         Picasso.get().load(myData[position].picURL).into(holder.gambar)
         holder.itemView.setOnClickListener{

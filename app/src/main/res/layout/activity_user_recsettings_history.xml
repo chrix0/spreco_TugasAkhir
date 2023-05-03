@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activityUser.user_recsettings_history"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Berikut pembagian bobot setiap kriteria berdasarkan jawaban Anda dalam penentuan preferensi kriteria."
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChartBobot"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginBottom="30dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/filterHargaHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:layoutDirection="rtl"
+                android:clickable="false"
+                android:textStyle="bold"
+                android:text="Filter Harga"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="9"
+            android:layout_marginBottom="20dp">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="2dp"
+                android:layout_weight="4">
+                <EditText
+                    android:id="@+id/filterStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lines="1"
+                    android:padding="5dp"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:inputType="number"
+                    android:gravity="top|start"/>
+            </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="-"
+                android:gravity="center"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="2dp"
+                android:layout_weight="4">
+                <EditText
+                    android:id="@+id/filterEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lines="1"
+                    android:enabled="false"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:inputType="number"
+                    android:gravity="top|start"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jumlah data maksimal yang muncul dalam daftar rekomendasi"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(Minimal 1, Maksimal {jumlah data smartphone di database})" />
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="2dp">
+                <EditText
+                    android:id="@+id/dataCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lines="1"
+                    android:padding="5dp"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:inputType="number"
+                    android:gravity="top|start"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>

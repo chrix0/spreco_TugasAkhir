@@ -7,12 +7,15 @@
     android:orientation="vertical"
     android:gravity="center"
     android:weightSum="10"
+    android:paddingHorizontal="30dp"
+    android:paddingVertical="40dp"
     tools:context=".accountAuth.login">
+
     <ImageView
         android:layout_weight="4"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:src="@drawable/test_dog"
+        android:src="@drawable/logo_phone"
         android:layout_marginBottom="20dp"/>
 
     <TextView
@@ -21,53 +24,98 @@
         android:textAlignment="center"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_bold"
-        android:text="Silahkan login terlebih dahulu"
-        android:textSize="16sp" />
+        android:text="Login Customer"
+        style="@style/TextAppearance.AppCompat.Title" />
 
-    <EditText
-        android:id="@+id/usernameLogin"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
-        android:fontFamily="@font/montserrat_bold"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        android:textSize="16sp" />
-    <EditText
-        android:id="@+id/passwordLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
-        android:fontFamily="@font/montserrat_bold"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textSize="16sp" />
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textStyle="bold"/>
 
-    <CheckBox
-        android:id="@+id/keepLoggedIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Selalu login dengan akun ini"
-        android:layout_gravity="left"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="2dp">
+                <EditText
+                    android:id="@+id/usernameLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lines="1"
+                    android:padding="5dp"
+                    android:textSize="16sp"
+                    android:inputType="text|textPersonName"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="top|start"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="2dp">
+                <EditText
+                    android:id="@+id/passwordLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lines="1"
+                    android:padding="5dp"
+                    android:textSize="16sp"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="top|start"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
         android:fontFamily="@font/montserrat_bold"
         android:text="Login" />
+
+    <Button
+        android:id="@+id/regCustButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Daftar customer baru" />
     <TextView
-        android:id="@+id/toSignUp"
+        android:id="@+id/loginAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -76,6 +124,6 @@
         android:textAlignment="center"
         android:clickable="true"
         android:fontFamily="@font/montserrat_bold"
-        android:text="Daftar akun baru"
+        android:text="Login sebagai admin"
         android:textSize="16sp" />
 </LinearLayout>

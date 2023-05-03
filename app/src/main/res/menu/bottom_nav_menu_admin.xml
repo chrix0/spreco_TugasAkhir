@@ -12,9 +12,9 @@
         android:title="Tambah" />
 
     <item
-        android:id="@+id/menu_toggle_kriteria"
+        android:id="@+id/menu_manage_customer"
         android:icon="@drawable/iconbnb_settings"
-        android:title="Toggle kriteria" />
+        android:title="Kelola Akun Custoemr" />
 
     <item
         android:id="@+id/menu_about_admin"

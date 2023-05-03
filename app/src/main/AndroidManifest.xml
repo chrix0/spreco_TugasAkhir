@@ -2,10 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.skripsi.spreco">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,36 +18,109 @@
         android:theme="@style/Theme.SmartphoneRecommender"
         tools:targetApi="31">
         <activity
+            android:name=".activityAdmin.admin_editCust"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activityAdmin.admin_manageCust"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activityAdmin.admin_passSetting"
+            android:exported="false"
+            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activityUser.user_editprofile"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activityUser.user_toggleKriteria"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activityUser.user_rechistory"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activityUser.user_recsettings_history"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".accountAuth.register"
             android:exported="false"
-            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"/>
+            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".accountAuth.login"
             android:exported="true"
-            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar">
+            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activityAdmin.admin_editor"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".activityUser.user_recshow"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".activityUser.user_recsettings"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true" />
         <activity
             android:name=".activityUser.user_spdetail"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true" />
         <activity
             android:name=".MainActivityUser"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/title_activity_main_user"
-            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar" />
     </application>
+
+    <!--Agar bisa membuka browser-->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
 
 </manifest>
