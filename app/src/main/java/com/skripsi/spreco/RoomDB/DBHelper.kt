@@ -16,7 +16,7 @@ import com.skripsi.spreco.classes.*
 //        RecPref::class,
         recHistory::class
     ],
-    version = 11)
+    version = 12)
 abstract class DBHelper : RoomDatabase(){
     abstract fun daoAccount() : AccountDAO
     abstract fun daoSP() : SpDAO

@@ -178,6 +178,11 @@ object data {
 
     var bobotKriteria = mutableMapOf<String, Double>()
 
+    //Tambah SP
+    var links = mutableListOf<SPSource>()
+
+
+
     //GSON
     fun serialize(matriks : MutableList<MutableList<Double>>) : String{
         val gson = Gson()

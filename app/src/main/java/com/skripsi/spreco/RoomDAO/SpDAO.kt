@@ -18,7 +18,7 @@ interface SpDAO {
     fun getSPLike(name: String) : List<Smartphone> //Isi sendiri bagian name, misalnya "%yang dicari%"
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSP(item : Smartphone)
+    fun addSP(item : Smartphone) : Long
 
     @Update
     fun updateSP(itemOutfit : Smartphone)
