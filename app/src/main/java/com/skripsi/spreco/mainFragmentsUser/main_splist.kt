@@ -21,6 +21,7 @@ import com.skripsi.spreco.SHOW_PRODUCT_INFO
 import com.skripsi.spreco.SHOW_SPDATA_TO_EDIT
 import com.skripsi.spreco.activityAdmin.admin_editor
 import com.skripsi.spreco.activityUser.user_spdetail
+import com.skripsi.spreco.classes.Account
 import com.skripsi.spreco.classes.SP_rank
 import com.skripsi.spreco.classes.Smartphone
 import com.skripsi.spreco.data
@@ -80,6 +81,12 @@ class main_splist : Fragment() {
 
         if(spsMutable.isEmpty()){
             nothing.visibility = View.VISIBLE
+        }
+
+        fun filter(searchText: String, context: Context): MutableList<Smartphone> {
+            var db = data.getRoomHelper(context)
+            var like = "%${searchText}%"
+            return db.daoSP().getSPLike(like).toMutableList()
         }
 
         // Search bar
@@ -147,10 +154,4 @@ class main_splist : Fragment() {
 
         return v
     }
-}
-
-fun filter(searchText: String, context: Context): MutableList<Smartphone> {
-    var db = data.getRoomHelper(context)
-    var like = "%${searchText}%"
-    return db.daoSP().getSPLike(like).toMutableList()
 }

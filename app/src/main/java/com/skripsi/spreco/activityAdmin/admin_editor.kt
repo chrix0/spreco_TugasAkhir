@@ -15,7 +15,8 @@ class admin_editor : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        //onBackPressed() deprecated, jadi perlu menggunakan onBackPressedDispatcher.onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 }

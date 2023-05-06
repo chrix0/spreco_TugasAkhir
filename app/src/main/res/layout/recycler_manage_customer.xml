@@ -15,7 +15,7 @@
         android:layout_weight="7"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/namaLink"
+            android:id="@+id/customerInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Username (Nomor ID)"

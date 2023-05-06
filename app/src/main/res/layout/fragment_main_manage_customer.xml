@@ -27,7 +27,7 @@
             android:layout_marginBottom="10dp"
             app:strokeWidth="2dp">
             <EditText
-                android:id="@+id/tbPassOld"
+                android:id="@+id/tbSearchCust"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -109,7 +109,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:paddingTop="30dp"
                 android:paddingBottom="30dp"
-                android:id="@+id/productList"
+                android:id="@+id/custList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </ScrollView>

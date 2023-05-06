@@ -60,9 +60,6 @@ class MainActivityUser : AppCompatActivity() {
                     "PRO" -> {
                         navBottom.selectedItemId = R.id.menu_about_user
                     }
-                    "ADD" -> {
-                        navBottom.selectedItemId = R.id.nav_tambah
-                    }
                 }
             }
         }
@@ -97,7 +94,10 @@ class MainActivityUser : AppCompatActivity() {
             if (intentData.hasExtra(RETURN_LAST_TAB)){
                 when(intentData.getStringExtra(RETURN_LAST_TAB)){
                     "ADD" -> {
-                        navBottom.selectedItemId = R.id.nav_tambah
+                        navBottom.selectedItemId = R.id.menu_tambah_hp
+                    }
+                    "CUS" -> {
+                        navBottom.selectedItemId = R.id.menu_manage_customer
                     }
                 }
             }

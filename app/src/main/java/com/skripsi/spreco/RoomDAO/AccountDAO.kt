@@ -2,6 +2,7 @@ package com.skripsi.spreco.RoomDAO
 
 import androidx.room.*
 import com.skripsi.spreco.classes.Account
+import com.skripsi.spreco.classes.Smartphone
 
 @Dao
 interface AccountDAO {
@@ -18,6 +19,12 @@ interface AccountDAO {
 
     @Query("Select * from Account where idAcc = :id")
     fun getAccById(id: Int) : List<Account>
+
+    @Query("Select * from Account where username like :name")
+    fun getAccLikeUsername(name: String) : MutableList<Account>
+
+    @Query("Select * from Account where CAST(idAcc AS TEXT) like :id")
+    fun getAccLikeID(id: String) : MutableList<Account>
 
     //INSERT
     @Insert(onConflict = OnConflictStrategy.REPLACE)

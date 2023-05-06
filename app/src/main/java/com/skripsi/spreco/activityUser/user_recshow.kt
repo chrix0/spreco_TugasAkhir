@@ -30,7 +30,6 @@ import com.skripsi.spreco.data.list_sp
 import com.skripsi.spreco.data.maxDataRec
 import com.skripsi.spreco.fahp_waspas.FAHP_WASPAS
 import com.skripsi.spreco.fahp_waspas.makeRanking
-import com.skripsi.spreco.mainFragmentsUser.filter
 import com.skripsi.spreco.recyclerAdapters.recycler_recshow_adapter
 import com.skripsi.spreco.recyclerAdapters.recycler_sp_adapter
 import kotlinx.android.synthetic.main.activity_user_recshow.*

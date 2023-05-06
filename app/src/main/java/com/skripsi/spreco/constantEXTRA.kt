@@ -8,6 +8,7 @@ const val SHOW_PRODUCT_INFO = "com.skripsi.spreco.PRODUCT_INFO"
 const val SHOW_RECOMMENDED = "com.skripsi.spreco.SHOW_PRODUCT_INFO"
 const val SHOW_PAST_REC_SETTINGS = "com.skripsi.spreco.SHOW_PAST_REC_SETTINGS"
 const val SHOW_SPDATA_TO_EDIT = "com.skripsi.spreco.SHOW_SPDATA_TO_EDIT"
+const val SHOW_PROFILE_TO_EDIT = "com.skripsi.spreco.SHOW_PROFILE_TO_EDIT"
 
 const val ADD_TO_CART = "com.skripsi.spreco.CART"
 const val CHECKOUT = "com.skripsi.spreco.CHECKOUT"
