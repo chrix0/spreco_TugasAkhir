@@ -10,7 +10,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.room.util.newStringBuilder
 import com.skripsi.spreco.R
 import com.skripsi.spreco.accountAuth.login
+import com.skripsi.spreco.data
 import com.skripsi.spreco.sharedPref.adminPassSharedPref
+import com.skripsi.spreco.util.spList
+import com.skripsi.spreco.util.spSourceList
 import kotlinx.android.synthetic.main.activity_admin_pass_setting.*
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -18,6 +21,23 @@ class admin_passSetting : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_pass_setting)
+
+
+        //Masukkan data ke dalam database
+        var db = data.getRoomHelper(applicationContext)
+        // Pilih dataset Smartphone yang digunakan (original / test)
+        // spList.spListType dapat diganti pada file dengan path "util/spList.kt"
+        if(spList.spListType == "original"){
+//            db.daoSPSource().deleteAllSPSource() //Untuk testing saja jangan lupa hapus
+//            db.daoSP().deleteAllSP() //Untuk testing saja jangan lupa hapus
+            db.daoSP().addAllSP(spList.list_sp)
+            db.daoSPSource().addAllSource(spSourceList.list_source)
+        }
+        else{
+            db.daoSPSource().deleteAllSPSource() //Hapus semua link untuk menghindari foreign key error
+            db.daoSP().deleteAllSP() //Reset isi tabel Smartphone
+            db.daoSP().addAllSP(spList.list_sp_test) //Ganti dengan list untuk testing
+        }
 
         var sharedpref = adminPassSharedPref(this)
 

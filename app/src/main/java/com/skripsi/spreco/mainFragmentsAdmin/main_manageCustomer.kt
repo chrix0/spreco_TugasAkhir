@@ -2,6 +2,7 @@ package com.skripsi.spreco.mainFragmentsAdmin
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
@@ -9,10 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skripsi.spreco.R
@@ -25,7 +24,10 @@ import com.skripsi.spreco.recyclerAdapters.recycler_cust_adapter
 import com.skripsi.spreco.recyclerAdapters.recycler_link_modify
 import com.skripsi.spreco.recyclerAdapters.recycler_sp_adapter
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 class main_manageCustomer : Fragment() {
 
     lateinit var custList: RecyclerView
@@ -47,86 +49,111 @@ class main_manageCustomer : Fragment() {
     fun code(v : View) : View{
 
         val tbSearchCust = v.findViewById<EditText>(R.id.tbSearchCust)
-        val byUsername = v.findViewById<RadioButton>(R.id.byUsername)
-        val byID = v.findViewById<RadioButton>(R.id.byID)
-        val ascend = v.findViewById<RadioButton>(R.id.ascend)
-        val descend = v.findViewById<RadioButton>(R.id.descend)
-        val buttonCari = v.findViewById<Button>(R.id.buttonCari)
+        var sortButton = v.findViewById<ImageButton>(R.id.sortButton)
+        var nothing = v.findViewById<TextView>(R.id.nothing_text)
         custList = v.findViewById<RecyclerView>(R.id.custList)
 
         var db = data.getRoomHelper(requireContext())
         var accs = db.daoAccount().getAllAcc() as MutableList
         var temp = mutableListOf<Account>()
 
-        fun filter(mode: String, sort : String, searchText: String, context: Context): MutableList<Account> {
-            var db = data.getRoomHelper(context)
-            var found: MutableList<Account> = if (mode == "username"){
-                var like = "%${searchText}%"
-                var found = db.daoAccount().getAccLikeUsername(like)
-                if(sort == "asc"){
-                    found.sortBy { it.username }
-                }
-                else{
-                    found.sortBy { it.username }
-                    found.reverse()
-                }
-                found
-            } else{ //ID
-                var like = "%${searchText}%"
-                var found = db.daoAccount().getAccLikeID(like)
-                if(sort == "asc"){
-                    found.sortBy { it.idAcc }
-                }
-                else{
-                    found.sortBy { it.idAcc }
-                    found.reverse()
-                }
-                found
+        fun filter(sort : String, searchText: String): MutableList<Account> {
+            var like = "%${searchText}%"
+            var found = db.daoAccount().getAccLikeUsername(like)
+            if(sort == "asc"){
+                found.sortBy { it.username }
             }
-
+            else{
+                found.sortByDescending { it.username }
+            }
             return found
         }
 
-        var mode = ""
-        byUsername.onCheckedChange { _, isChecked ->
-            if(isChecked)
-                mode = "username"
-        }
-        byID.onCheckedChange { _, isChecked ->
-            if(isChecked)
-                mode = "id"
-        }
-
-        var sort = ""
-        descend.onCheckedChange { _, isChecked ->
-            if(isChecked)
-                sort = "des"
-        }
-        ascend.onCheckedChange { _, isChecked ->
-            if(isChecked)
-                sort = "asc"
-        }
-
-        buttonCari.setOnClickListener {
-            if((sort == "") and (mode == "")){
-                Toast.makeText(requireContext(),"Jenis pencarian dan jenis urutan harus dipilih terlebih dahulu.", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                temp.clear()
-                temp.addAll(filter(mode, sort, tbSearchCust.text.toString(), requireContext()))
-                adapter = recycler_cust_adapter(temp, requireContext()){
+        tbSearchCust.setOnEditorActionListener { _, i, _ ->
+            if (i == EditorInfo.IME_ACTION_DONE){
+                var searchText = tbSearchCust.text
+                var like = "%${searchText}%"
+                var res = db.daoAccount().getAccLikeUsername(like)
+                adapter = recycler_cust_adapter(res, requireContext()){
                     this.adapter.notifyDataSetChanged()
                 }
                 custList.adapter = adapter
+
+                nothing.text = "Data akun customer tidak ditemukan"
+                if(res.isEmpty()){
+                    nothing.visibility = View.VISIBLE
+                }
+                else{
+                    nothing.visibility = View.GONE
+                }
+            }
+            return@setOnEditorActionListener true
+        }
+
+        var popup = PopupMenu(requireContext(), sortButton)
+        popup.menuInflater.inflate(R.menu.menu_sort_customer, popup.menu)
+        sortButton.setOnClickListener{
+            popup.show()
+        }
+
+        fun showModifiedRec(spsMutable : MutableList<Account>){
+            adapter = recycler_cust_adapter(spsMutable, requireContext()){
+                this.adapter.notifyDataSetChanged()
+            }
+            custList.adapter = adapter
+
+            if(spsMutable.isEmpty()){
+                nothing.visibility = View.VISIBLE
+                nothing.text = "Data tidak ditemukan"
             }
         }
+
+        popup.setOnMenuItemClickListener { menu ->
+            var temp = (custList.adapter as recycler_cust_adapter).myData.toMutableList()
+            return@setOnMenuItemClickListener when(menu.itemId){
+                R.id.id_asc->{
+                    temp.sortBy { it.idAcc }
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.id_des ->{
+                    temp.sortByDescending { it.idAcc }
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.username_asc ->{
+                    temp.sortBy { it.username.lowercase()}
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.username_des ->{
+                    temp.sortByDescending { it.username.lowercase()}
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.lastLogin_asc ->{
+                    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+                    temp.sortWith(compareBy { LocalDateTime.parse(it.terakhirLogin, formatter) })
+                    showModifiedRec(temp)
+                    true
+                }
+                R.id.lastLogin_des ->{
+                    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+                    temp.sortWith(compareBy { LocalDateTime.parse(it.terakhirLogin, formatter) })
+                    temp.reverse()
+                    showModifiedRec(temp)
+                    true
+                }
+                else -> false
+            }
+        }
+
 
         adapter = recycler_cust_adapter(accs, requireContext()){
             this.adapter.notifyDataSetChanged()
         }
         custList.layoutManager = LinearLayoutManager(requireContext())
         custList.adapter = adapter
-
 
         return v
     }

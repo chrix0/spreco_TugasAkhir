@@ -15,29 +15,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.SmartphoneRecommender"
         tools:targetApi="31">
-        <activity
-            android:name=".activityAdmin.admin_editCust"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".activityAdmin.admin_manageCust"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".activityAdmin.admin_passSetting"
             android:exported="false"
             android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -45,7 +32,9 @@
         <activity
             android:name=".activityUser.user_editprofile"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -53,7 +42,9 @@
         <activity
             android:name=".activityUser.user_toggleKriteria"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -61,7 +52,9 @@
         <activity
             android:name=".activityUser.user_rechistory"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -69,7 +62,9 @@
         <activity
             android:name=".activityUser.user_recsettings_history"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -78,12 +73,16 @@
             android:name=".accountAuth.register"
             android:exported="false"
             android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".accountAuth.login"
             android:exported="true"
             android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -93,25 +92,35 @@
         <activity
             android:name=".activityAdmin.admin_editor"
             android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activityUser.user_recshow"
             android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activityUser.user_recsettings"
             android:windowSoftInputMode="adjustPan"
-            android:exported="true" />
+            android:exported="true"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activityUser.user_spdetail"
             android:windowSoftInputMode="adjustPan"
-            android:exported="true" />
+            android:exported="true"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivityUser"
             android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/title_activity_main_user"
-            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar" />
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.SmartphoneRecommender.NoActionBar"
+            android:screenOrientation="portrait"/>
     </application>
 
     <!--Agar bisa membuka browser-->

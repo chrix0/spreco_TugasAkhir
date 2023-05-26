@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     android:weightSum="100"
     android:orientation="vertical"
     tools:context=".activityUser.user_recshow"
@@ -83,7 +85,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="72">
+        android:layout_weight="80">
         <TextView
             android:id="@+id/nothing_text"
             android:layout_width="match_parent"
@@ -91,20 +93,13 @@
             android:text="Tidak ada produk yang dapat direkomendasikan."
             android:gravity="center_horizontal|center_vertical"
             android:visibility="gone"/>
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="20dp"
+            android:id="@+id/rankingList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            android:fadeScrollbars="false"
-            android:scrollbarStyle="outsideOverlay">
-            <androidx.recyclerview.widget.RecyclerView
-                android:paddingTop="30dp"
-                android:paddingBottom="30dp"
-                android:id="@+id/rankingList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top"/>
-        </ScrollView>
+            android:layout_gravity="top"/>
     </FrameLayout>
 
 

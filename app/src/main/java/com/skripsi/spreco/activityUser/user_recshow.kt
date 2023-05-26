@@ -22,22 +22,13 @@ import com.skripsi.spreco.classes.SP_rank
 import com.skripsi.spreco.classes.SP_rec
 import com.skripsi.spreco.classes.Smartphone
 import com.skripsi.spreco.classes.recHistory
-import com.skripsi.spreco.data.currentAccId
-import com.skripsi.spreco.data.filterHargaChecked
-import com.skripsi.spreco.data.hargaRangeAtas
-import com.skripsi.spreco.data.hargaRangeBawah
-import com.skripsi.spreco.data.list_sp
-import com.skripsi.spreco.data.maxDataRec
-import com.skripsi.spreco.fahp_waspas.FAHP_WASPAS
+import com.skripsi.spreco.fahp_waspas.FAHP
+import com.skripsi.spreco.fahp_waspas.WASPAS
 import com.skripsi.spreco.fahp_waspas.makeRanking
 import com.skripsi.spreco.recyclerAdapters.recycler_recshow_adapter
-import com.skripsi.spreco.recyclerAdapters.recycler_sp_adapter
+import com.skripsi.spreco.util.spList
 import kotlinx.android.synthetic.main.activity_user_recshow.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.jetbrains.anko.doAsync
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,9 +38,6 @@ var hitung : MutableList<Double> = mutableListOf() //Berisi hasil perhitungan FA
 var hasil : MutableList<SP_rank> = mutableListOf() //Berisi daftar ranking smartphone
 var pcm : MutableList<MutableList<Double>> = mutableListOf() //Berisi PCM
 lateinit var obj_history : recHistory
-
-var perluFilterHarga = false
-
 lateinit var adapter : recycler_recshow_adapter
 
 class user_recshow : AppCompatActivity() {
@@ -187,37 +175,51 @@ class user_recshow : AppCompatActivity() {
 
     inner class Async : AsyncTask<Void, Void, Unit>(){
         //Beri tahu user bahwa rekomendasi sedang diproses..
+        private var startTime: Long = 0
         var dialog = ProgressDialog(this@user_recshow).apply {
             setMessage("Rekomendasi Anda sedang diproses.\nMohon tunggu.")
             setProgressStyle(ProgressDialog.STYLE_SPINNER)
             setCancelable(false)
         }
         override fun doInBackground(vararg p0: Void?): Unit? {
-            convert = fahp_waspas.convert_ke_nilai_kriteria(list_sp)
-            hitung = FAHP_WASPAS(convert, pcm)
-            hasil = makeRanking(list_sp, hitung).take(data.maxDataRec).toMutableList()
+            var db = data.getRoomHelper(applicationContext)
+            var listDiproses = mutableListOf<Smartphone>()
+            var listSp = db.daoSP().getAllSP()
+            listDiproses.addAll(listSp)
+            //Kalau perlu filter harga..
+            if(data.filterHargaChecked){
+                listDiproses = listDiproses.filter {
+                    it.harga in data.hargaRangeBawah..data.hargaRangeAtas
+                }.toMutableList()
+            }
+
+            convert = fahp_waspas.convert_ke_nilai_kriteria(listDiproses)
+            hitung = WASPAS(convert, FAHP(data.pcm)) // Perhitungan FAHP-WASPAS di sini
+
+            hasil = if(listDiproses.size >= data.maxDataRec){
+                makeRanking(listDiproses, hitung).take(data.maxDataRec).toMutableList()
+            } else{
+                makeRanking(listDiproses, hitung).toMutableList()
+            }
+
             return null
         }
         override fun onPreExecute() {
             super.onPreExecute()
+            startTime = System.currentTimeMillis()
             pcm = data.pcm
             dialog.show()
         }
         override fun onPostExecute(result: Unit?) {
             super.onPostExecute(result)
+            val executionTime = (System.currentTimeMillis() - startTime) / 1000.0
+            val decimalFormat = DecimalFormat("#.##")
+            val roundedExecutionTime = decimalFormat.format(executionTime)
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            //Jika checkbox filter harga pada halaman sebelumnya dicentang..
-            perluFilterHarga = filterHargaChecked
-            if(filterHargaChecked){
-                Toast.makeText(this@user_recshow,"${hargaRangeBawah}, $hargaRangeAtas", Toast.LENGTH_LONG).show()
-                hasil = hasil.filter {
-                    (it.obj_sp.harga >= hargaRangeBawah) and (it.obj_sp.harga <= hargaRangeAtas)
-                }.toMutableList()
-            }
 
-            temp.addAll(hasil)
+            temp.addAll(hasil) //Akan dipakai dalam pencarian nantinya.
 
             if(hasil.isEmpty()){
                 nothing_text.text = "Tidak ada produk yang dapat direkomendasikan."
@@ -231,16 +233,7 @@ class user_recshow : AppCompatActivity() {
                 startActivity(info)
             }
 
-            shownCount.text = "Jumlah data: ${hasil.size}"
-
-            //Cek hitungan. Hapus jika tidak perlu
-            val mimeType = "text/plain"
-            ShareCompat.IntentBuilder
-                .from(this@user_recshow)
-                .setType(mimeType)
-                .setChooserTitle("Untuk periksa perhitungan saja. Dialog ini akan dihapus.")
-                .setText(data.caraHitung)
-                .startChooser()
+            shownCount.text = "Jumlah data: ${hasil.size} || Waktu eksekusi: $roundedExecutionTime detik"
 
             rankingList.layoutManager = LinearLayoutManager(this@user_recshow)
             rankingList.adapter = adapter
@@ -248,7 +241,7 @@ class user_recshow : AppCompatActivity() {
             var hasilToJSON= Gson().toJson(hasil)
             var bobotKriteriaToJSON = Gson().toJson(data.bobotKriteria)
             var pcmJSON = Gson().toJson(data.pcm)
-            obj_history = recHistory(0, currentAccId, hasilToJSON, getCurrentDateTime(), hargaRangeBawah, hargaRangeAtas, maxDataRec, bobotKriteriaToJSON, pcmJSON)
+            obj_history = recHistory(0, data.currentAccId, hasilToJSON, getCurrentDateTime(), data.hargaRangeBawah, data.hargaRangeAtas, data.maxDataRec, bobotKriteriaToJSON, pcmJSON)
             db.daoRecHistory().addHistory(obj_history) //Simpan ke RecHistory
 
             //Reset..

@@ -26,7 +26,7 @@ class recycler_recshow_adapter(data : List<SP_rank>, private val clickListener: 
 
     override fun onBindViewHolder(holder: myHolder, position: Int) {
         holder.rank.text = "${myData[position].rank}"
-        holder.nama.text = "${myData[position].obj_sp.namaSP}"
+        holder.nama.text = "${myData[position].obj_sp.namaSP} (RAM ${myData[position].obj_sp.ram} GB, ROM ${myData[position].obj_sp.rom} GB)"
         holder.harga.text = "Rp.${data.formatHarga(myData[position].obj_sp.harga)}"
         holder.skor.text = "${String.format("%.2f", myData[position].score * 100)}"
         holder.itemView.setOnClickListener{

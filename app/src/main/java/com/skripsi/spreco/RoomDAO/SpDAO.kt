@@ -21,7 +21,13 @@ interface SpDAO {
     fun addSP(item : Smartphone) : Long
 
     @Update
-    fun updateSP(itemOutfit : Smartphone)
+    fun updateSP(item : Smartphone)
+
+    @Delete
+    fun deleteSP(item : Smartphone)
+
+    @Query("DELETE FROM Smartphone")
+    fun deleteAllSP()
 
     @Transaction
     fun addAllSP(list : List<Smartphone>){

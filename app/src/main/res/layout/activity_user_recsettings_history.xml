@@ -97,10 +97,6 @@
                 android:layout_height="wrap_content"
                 android:text="Jumlah data maksimal yang muncul dalam daftar rekomendasi"
                 android:textStyle="bold"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="(Minimal 1, Maksimal {jumlah data smartphone di database})" />
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

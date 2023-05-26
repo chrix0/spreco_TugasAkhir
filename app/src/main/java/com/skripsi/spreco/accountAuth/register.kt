@@ -2,17 +2,22 @@ package com.skripsi.spreco.accountAuth
 
 import android.accounts.Account
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.skripsi.spreco.MainActivityUser
 import com.skripsi.spreco.R
 import com.skripsi.spreco.data
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.internals.AnkoInternals.createAnkoContext
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 class register : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +55,7 @@ class register : AppCompatActivity() {
        var clsAccount : com.skripsi.spreco.classes.Account =
             com.skripsi.spreco.classes.Account(
                 0,
-                "","",""
+                "","","", ""
             )
         signup.setOnClickListener{
             cuserName = username.text.toString()
@@ -75,7 +80,12 @@ class register : AppCompatActivity() {
                     clsAccount.username = cuserName
                     clsAccount.password = cpassword
                     clsAccount.namaAcc = cfullName
+                    // Jika menggunakan tanggal dan waktu di bawah ini, berarti user belum pernah login dengan akun ini.
+                    // Tanggal ini digunakan karena aplikasi ini belum dibuat pada tanggal tersebut..
+                    // Tentunya pada tanggal tersebut, belum ada akun yang terdaftar ataupun yang sudah masuk ke dalam aplikasi ini.
+                    clsAccount.terakhirLogin = "01-01-1971 00:00:00"
 
+                    //Tambah data baru
                     db.daoAccount().newAcc(clsAccount)
                     Toast.makeText(this, "Akun baru berhasil dibuat.", Toast.LENGTH_SHORT).show()
                     var intent = Intent(this, login::class.java)

@@ -29,15 +29,15 @@
         <TextView
             android:id="@+id/qText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:textSize="16sp"
+            android:padding="5dp"
             android:text="Menurut Anda, seberapa penting {K1} smartphone daripada {K2} smartphone?" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="100dp">
+            android:orientation="vertical">
             <Button
                 android:id="@+id/p1"
                 android:layout_width="match_parent"

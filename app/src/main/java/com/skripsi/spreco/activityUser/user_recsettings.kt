@@ -97,7 +97,7 @@ class user_recsettings : AppCompatActivity() {
 
         fun next(i : Int, j : Int, total : Int, criteriaList : MutableList<String>, posisi : Int){
             askCount.text = "Pertanyaan $posisi dari $total."
-            qText.text = "Menurut Anda, seberapa penting ${criteriaList[i]} smartphone daripada ${criteriaList[j]} smartphone?"
+            qText.text = "Menurut Anda, bagaimana pentingnya kriteria ${criteriaList[i]} daripada kriteria ${criteriaList[j]}?"
         }
 
         var index_target = 0

@@ -134,7 +134,6 @@ class main_tambah : Fragment() {
             else{
                 Toast.makeText(requireContext(),"Isi URL Gambar Produk terlebih dahulu.", Toast.LENGTH_SHORT).show()
             }
-
         }
 
         data.links = mutableListOf()
@@ -311,12 +310,12 @@ class main_tambah : Fragment() {
                     Toast.makeText(requireContext(),"Data smartphone berhasil ditambah.", Toast.LENGTH_LONG).show()
 
                     //Reset activity biar kembali ke posisi semula (akibat me malas aja), yang penting hasilnya sesuai.
-                    var intent = Intent(activity!!.intent)
+                    var intent = Intent(requireActivity().intent)
                     intent.putExtra(RETURN_LAST_TAB, "ADD")
-                    this.activity!!.finish()
-                    this.activity!!.overridePendingTransition(0, 0)
-                    this.activity!!.startActivity(intent);
-                    this.activity!!.overridePendingTransition(0, 0)
+                    this.requireActivity().finish()
+                    this.requireActivity().overridePendingTransition(0, 0)
+                    this.requireActivity().startActivity(intent);
+                    this.requireActivity().overridePendingTransition(0, 0)
                 }
             }
             else{

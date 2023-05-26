@@ -48,7 +48,7 @@ class main_wishlist : Fragment() {
             sps.add(db.daoSP().getSPDetail(i.idSP)[0])
         }
 
-        var adapter = recycler_sp_adapter(sps){
+        var adapter = recycler_sp_adapter(sps, requireContext()){
             val info = Intent(requireContext(), user_spdetail::class.java)
             info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
             startActivity(info)
@@ -74,7 +74,7 @@ class main_wishlist : Fragment() {
             sps.add(db.daoSP().getSPDetail(i.idSP)[0])
         }
 
-        var adapter = recycler_sp_adapter(sps){
+        var adapter = recycler_sp_adapter(sps, requireContext()){
             val info = Intent(requireContext(), user_spdetail::class.java)
             info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
             startActivity(info)

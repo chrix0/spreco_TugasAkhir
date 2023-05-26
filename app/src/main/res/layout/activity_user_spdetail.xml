@@ -43,7 +43,6 @@ tools:context=".activityUser.user_spdetail">
                     android:text="Rp.??? "
                     android:textSize="15sp" />
             </LinearLayout>
-
             <ToggleButton
                 android:id="@+id/addToWish"
                 android:layout_width="0dp"

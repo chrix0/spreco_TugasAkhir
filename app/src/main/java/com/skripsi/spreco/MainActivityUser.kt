@@ -4,7 +4,9 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -24,6 +26,15 @@ class MainActivityUser : AppCompatActivity() {
         val navController = findNavController(R.id.fragmentContainerView)
         navBottom.setupWithNavController(navController)
 
+        // Multiple backstack untuk mencegah fragment di-destroy ketika berpindah fragment
+        var navOption = navOptions {
+//            launchSingleTop = true
+            restoreState = true
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+        }
+
         if(data.curRole == 'C'){
             navBottom.menu.clear();
             navBottom.inflateMenu(R.menu.bottom_nav_menu)
@@ -31,19 +42,19 @@ class MainActivityUser : AppCompatActivity() {
             navBottom.setOnItemSelectedListener {
                 when(it.itemId){
                     R.id.menu_katalog_user -> {
-                        navController.navigate(R.id.nav_splist)
+                        navController.navigate(R.id.nav_splist, null, navOption)
                         true
                     }
                     R.id.menu_wishlist_user -> {
-                        navController.navigate(R.id.nav_wishlist)
+                        navController.navigate(R.id.nav_wishlist, null, navOption)
                         true
                     }
                     R.id.menu_rekomendasi_user -> {
-                        navController.navigate(R.id.nav_rekomendasi)
+                        navController.navigate(R.id.nav_rekomendasi, null, navOption)
                         true
                     }
                     R.id.menu_about_user -> {
-                        navController.navigate(R.id.nav_about)
+                        navController.navigate(R.id.nav_about, null, navOption)
                         true
                     }
                     else ->
@@ -70,19 +81,19 @@ class MainActivityUser : AppCompatActivity() {
             navBottom.setOnItemSelectedListener {
                 when(it.itemId){
                     R.id.menu_list_admin -> {
-                        navController.navigate(R.id.nav_splist)
+                        navController.navigate(R.id.nav_splist, null, navOption)
                         true
                     }
                     R.id.menu_tambah_hp -> {
-                        navController.navigate(R.id.nav_tambah)
+                        navController.navigate(R.id.nav_tambah, null, navOption)
                         true
                     }
                     R.id.menu_manage_customer -> {
-                        navController.navigate(R.id.nav_kelola_customer)
+                        navController.navigate(R.id.nav_kelola_customer, null, navOption)
                         true
                     }
                     R.id.menu_about_admin -> {
-                        navController.navigate(R.id.nav_about)
+                        navController.navigate(R.id.nav_about, null, navOption)
                         true
                     }
                     else ->

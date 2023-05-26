@@ -45,7 +45,7 @@ class user_spdetail : AppCompatActivity() {
             "Network: ${produk.network}\n" +
             "SIM: ${produk.sim}\n" +
             "Tipe display: ${produk.tDisplay}\n" +
-            "Ukuran display: ${produk.uDisplay}\n" +
+            "Ukuran display: ${produk.uDisplay} inci\n" +
             "OS: ${produk.OS}\n" +
             "Chipset: ${produk.chipset}\n" +
             "CPU: ${produk.cpu}\n" +
@@ -118,7 +118,8 @@ class user_spdetail : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         //onBackPressed() deprecated, jadi perlu menggunakan onBackPressedDispatcher.onBackPressed()
-        onBackPressedDispatcher.onBackPressed()
+//        onBackPressedDispatcher.onBackPressed()
+        finish()
         return true
     }
 }

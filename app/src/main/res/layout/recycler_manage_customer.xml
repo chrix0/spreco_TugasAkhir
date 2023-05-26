@@ -5,20 +5,35 @@
     android:layout_height="wrap_content"
     android:layout_weight="10"
     android:background="@color/grey"
-    android:padding="10dp"
+    android:padding="15dp"
     android:weightSum="10"
     android:clickable="true"
     android:layout_marginBottom="10dp">
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_weight="7"
+        android:layout_height="wrap_content"
+        android:layout_weight="8.5"
+        android:gravity="center_vertical"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/idInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID: 0"
+            android:includeFontPadding="false"
+            android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/customerInfo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Username (Nomor ID)"
+            android:layout_height="wrap_content"
+            android:text="Username: ###"
+            android:includeFontPadding="false"
+            android:gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/lastSeenInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Terakhir login: ###"
             android:includeFontPadding="false"
             android:gravity="center_vertical"/>
     </LinearLayout>
@@ -35,19 +50,5 @@
             android:padding="10dp"
             android:clickable="true"
             android:id="@+id/deleteUser"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1.5"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/icon_edit"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:clickable="true"
-            android:id="@+id/editUser"/>
     </LinearLayout>
 </LinearLayout>

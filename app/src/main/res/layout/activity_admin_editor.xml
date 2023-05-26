@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ID smartphone: 12345"
+                android:id="@+id/idCustomer"
                 android:layout_marginBottom="10dp"/>
 
             <LinearLayout
@@ -729,28 +730,25 @@
                 android:layout_height="150dp"
                 android:id="@+id/previewPic"/>
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Link pembelian"
-                    android:textStyle="bold"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:id="@+id/linkList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-                <Button
-                    android:id="@+id/addLink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="Tambah link baru"/>
-            </LinearLayout>
+                android:text="Link pembelian"
+                android:textStyle="bold"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:id="@+id/linkList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/addLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Tambah link baru"/>
 
             <Button
                 android:id="@+id/update"

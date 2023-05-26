@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="Pilih kriteria yang akan digunakan dalam proses pemberian rekomendasi."
+            android:textColor="@color/black"
+            android:text="Pilih dua atau lebih kriteria yang akan digunakan dalam proses pemberian rekomendasi."
             android:layout_marginBottom="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,7 +87,7 @@
                     android:gravity="left|center"
                     android:layoutDirection="rtl"
                     android:textStyle="bold"
-                    android:text="Filter Harga"/>
+                    android:text="Filter Harga (opsional)"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,6 +108,7 @@
                         android:background="@color/white"
                         android:lines="1"
                         android:padding="5dp"
+                        android:enabled="false"
                         android:textColor="@color/black"
                         android:inputType="number"
                         android:gravity="top|start"/>
@@ -131,6 +133,7 @@
                         android:background="@color/white"
                         android:lines="1"
                         android:padding="5dp"
+                        android:enabled="false"
                         android:textColor="@color/black"
                         android:inputType="number"
                         android:gravity="top|start"/>
@@ -144,13 +147,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jumlah data maksimal yang muncul dalam daftar rekomendasi"
+                    android:textColor="@color/black"
+                    android:text="Jumlah data maksimal yang muncul dalam daftar rekomendasi (wajib diisi)"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/showMax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="(Minimal 1, Maksimal {jumlah data smartphone di database})" />
+                    android:text="(Minimal 1, Maksimal {jumlah data yang ditentukan})" />
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

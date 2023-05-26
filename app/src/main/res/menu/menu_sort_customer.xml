@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/id_asc"
+        android:title="Nomor ID (Menaik)"/>
+    <item
+        android:id="@+id/id_des"
+        android:title="Nomor ID (Menurun)"/>
+    <item
+        android:id="@+id/username_asc"
+        android:title="Username (Menaik)"/>
+    <item
+        android:id="@+id/username_des"
+        android:title="Username (Menurun)"/>
+    <item
+        android:id="@+id/lastLogin_asc"
+        android:title="Terakhir login (Menaik)"/>
+    <item
+        android:id="@+id/lastLogin_des"
+        android:title="Terakhir login (Menurun)"/>
+</menu>

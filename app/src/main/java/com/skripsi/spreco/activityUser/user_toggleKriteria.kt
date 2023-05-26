@@ -89,7 +89,8 @@ class user_toggleKriteria : AppCompatActivity() {
             filterEnd.isEnabled = kondisi
         }
 
-        var size = db.daoSP().getAllSP().size
+//        var size = db.daoSP().getAllSP().size
+        var size = 50 //Dibatasi ke 50 data karena adanya kemungkinan crash jika data ditampilkan terlalu banyak
         showMax.text = "Minimal 1, Maksimal $size"
 
         saveToggle.setOnClickListener {

@@ -20,4 +20,7 @@ data class Account (
 
     @ColumnInfo
     var password : String,
+
+    @ColumnInfo
+    var terakhirLogin : String,
 ): Parcelable
