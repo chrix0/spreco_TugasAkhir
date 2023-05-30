@@ -62,7 +62,7 @@ class admin_editor : AppCompatActivity() {
 
         val produk : Smartphone = intent.getParcelableExtra<Parcelable>(SHOW_SPDATA_TO_EDIT) as Smartphone
 
-        idCustomer.text = "ID Smarphone: ${produk.idSP}"
+        idCustomer.text = "ID Smartphone: ${produk.idSP}"
 
         val ed_namasp = findViewById<EditText>(R.id.ed_namasp)
         val ed_merek = findViewById<EditText>(R.id.ed_merek)

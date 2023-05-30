@@ -1,6 +1,7 @@
 
 package com.skripsi.spreco.activityUser
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.icu.number.IntegerWidth
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,6 @@ class user_recsettings : AppCompatActivity() {
         val actionbar = supportActionBar
         actionbar!!.title = "Pengaturan rekomendasi"
         actionbar.setDisplayHomeAsUpEnabled(true)
-
 
         //B -> Benefit, C -> Cost
         var criteriaType = mutableMapOf(
@@ -63,17 +63,6 @@ class user_recsettings : AppCompatActivity() {
             }
             pcm.add(baris)
         }
-
-//        for (i in 0 until enabledCriteria.size - 1){
-//            for (j in 0 until enabledCriteria.size - 1){
-//                if (i == j)
-//                    pcm[i][j] = 1.0
-//                else{
-//                    pcm[i][j] = 0.0
-//                }
-//            }
-//        }
-
         // Menentukan posisi input
         for (i in 0 until enabledCriteria.size){
             for (j in i until enabledCriteria.size){
@@ -95,9 +84,33 @@ class user_recsettings : AppCompatActivity() {
             return pcm
         }
 
+
+        @SuppressLint("SetTextI18n")
         fun next(i : Int, j : Int, total : Int, criteriaList : MutableList<String>, posisi : Int){
             askCount.text = "Pertanyaan $posisi dari $total."
-            qText.text = "Menurut Anda, bagaimana pentingnya kriteria ${criteriaList[i]} daripada kriteria ${criteriaList[j]}?"
+            var iPositif = ""
+            var iNegatif = ""
+            var jPositif = ""
+            var jNegatif = ""
+
+            if (criteriaType[criteriaList[i]] == 'C'){
+                iPositif = "rendah"
+                iNegatif = "tinggi"
+            }
+            else{
+                iPositif = "tinggi"
+                iNegatif = "rendah"
+            }
+            if (criteriaType[criteriaList[j]] == 'C'){
+                jPositif = "rendah"
+                jNegatif = "tinggi"
+            }
+            else{
+                jPositif = "tinggi"
+                jNegatif = "rendah"
+            }
+            compareText.text = "Smartphone dengan ${criteriaList[i]} ${iPositif} dan ${criteriaList[j]} ${jNegatif} \n\n dan \n\n Smartphone dengan ${criteriaList[i]} ${iNegatif} dan ${criteriaList[j]} ${jPositif}"
+            qText.text = "Bagaimana ketertarikan Anda dalam memilih Smartphone dengan ${criteriaList[i]} ${iPositif} dan ${criteriaList[j]} ${jNegatif}?"
         }
 
         var index_target = 0

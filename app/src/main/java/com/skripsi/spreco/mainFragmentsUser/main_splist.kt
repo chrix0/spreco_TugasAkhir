@@ -99,10 +99,21 @@ class main_splist : Fragment() {
             if (i == EditorInfo.IME_ACTION_DONE){
                 spsMutable.clear()
                 spsMutable.addAll(filter(search.text.toString(), requireContext()))
-                adapter = recycler_sp_adapter(spsMutable, requireContext()){
-                    val info = Intent(requireContext(), user_spdetail::class.java)
-                    info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
-                    startActivity(info)
+                if (data.curRole == 'C'){
+                    adapter = recycler_sp_adapter(spsMutable, requireContext()){
+                        val info = Intent(requireContext(), user_spdetail::class.java)
+                        info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
+                        startActivity(info)
+                    }
+                    adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                }
+                else{
+                    adapter = recycler_sp_adapter(spsMutable, requireContext()){
+                        val info = Intent(requireContext(), admin_editor::class.java)
+                        info.putExtra(SHOW_SPDATA_TO_EDIT, it as Parcelable)
+                        startActivity(info)
+                    }
+                    adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 }
                 productList.adapter = adapter
                 countDaftar.text = "Jumlah data: ${adapter.myData.size}"

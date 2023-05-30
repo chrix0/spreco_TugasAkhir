@@ -27,12 +27,31 @@
             android:layout_marginBottom="10dp"/>
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Anda diminta untuk memilih salah satu dari kedua smartphone yang memiliki keunggulan dan kekurangan yang berbeda:"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/compareText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:text="Smartphone dengan RAM tinggi dan harga tinggi \n\n dan \n\n Smartphone dengan RAM rendah dan harga rendah"
+            android:textSize="16sp" />
+
+
+        <TextView
             android:id="@+id/qText"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:padding="5dp"
-            android:text="Menurut Anda, seberapa penting {K1} smartphone daripada {K2} smartphone?" />
+            android:text="Seberapa tertarik Anda untuk memilih Smartphone dengan RAM tinggi dan harga tinggi?"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,31 +62,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="Sangat tidak penting"/>
+                android:text="Sangat tidak tertarik"/>
             <Button
                 android:id="@+id/p2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="Kurang penting" />
+                android:text="Kurang tertarik" />
             <Button
                 android:id="@+id/p3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="Sama penting" />
+                android:text="Netral" />
             <Button
                 android:id="@+id/p4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="Lebih penting" />
+                android:text="Tertarik" />
             <Button
                 android:id="@+id/p5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:text="Sangat penting" />
+                android:text="Sangat tertarik" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
