@@ -49,26 +49,4 @@
         android:padding="10dp"
         android:clickable="true"/>
 
-    <!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/grey"
-        android:padding="10dp"
-        android:orientation="vertical"
-        android:clickable="true"
-        android:layout_marginBottom="10dp">
-        <TextView
-            android:id="@+id/namaLink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Website A"/>
-        <TextView
-            android:id="@+id/tglBuatLink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tanggal Tambah: DD-MM-YYY "/>
-    </LinearLayout>
-    -->
-
 </LinearLayout>

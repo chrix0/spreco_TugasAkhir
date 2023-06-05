@@ -174,10 +174,6 @@ class user_recsettings : AppCompatActivity() {
                 var db = data.getRoomHelper(applicationContext)
 
                 data.pcm = pcm
-//                val gson = Gson()
-//                var pcmJSON = gson.toJson(pcm)
-//                var res = RecPref(currentAccId, pcmJSON)
-//                db.daoRecPref().addPCM(res)
 
                 data.settingDone = true
                 Toast.makeText(this, "Pengaturan rekomendasi Anda telah disimpan.\nSilahkan lanjut ke step berikutnya.", Toast.LENGTH_SHORT).show()
@@ -197,10 +193,6 @@ class user_recsettings : AppCompatActivity() {
                 var db = data.getRoomHelper(applicationContext)
 
                 data.pcm = pcm
-//                val gson = Gson()
-//                var pcmJSON = gson.toJson(pcm)
-//                var res = RecPref(currentAccId, pcmJSON)
-//                db.daoRecPref().addPCM(res)
 
                 data.settingDone = true
                 Toast.makeText(this, "Pengaturan rekomendasi Anda telah disimpan.\nSilahkan lanjut ke step berikutnya.", Toast.LENGTH_SHORT).show()
@@ -220,10 +212,6 @@ class user_recsettings : AppCompatActivity() {
                 var db = data.getRoomHelper(applicationContext)
 
                 data.pcm = pcm
-//                val gson = Gson()
-//                var pcmJSON = gson.toJson(pcm)
-//                var res = RecPref(currentAccId, pcmJSON)
-//                db.daoRecPref().addPCM(res)
 
                 data.settingDone = true
                 Toast.makeText(this, "Pengaturan rekomendasi Anda telah disimpan.\nSilahkan lanjut ke step berikutnya.", Toast.LENGTH_SHORT).show()
