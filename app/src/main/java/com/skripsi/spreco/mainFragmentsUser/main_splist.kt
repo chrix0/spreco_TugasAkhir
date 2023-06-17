@@ -1,3 +1,4 @@
+
 package com.skripsi.spreco.mainFragmentsUser
 
 import android.content.Context
@@ -19,13 +20,10 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.skripsi.spreco.R
-import com.skripsi.spreco.SHOW_PRODUCT_INFO
-import com.skripsi.spreco.SHOW_SPDATA_TO_EDIT
+import com.skripsi.spreco.*
 import com.skripsi.spreco.activityAdmin.admin_editor
 import com.skripsi.spreco.activityUser.user_spdetail
 import com.skripsi.spreco.classes.Smartphone
-import com.skripsi.spreco.data
 import com.skripsi.spreco.recyclerAdapters.recycler_sp_adapter
 import com.skripsi.spreco.util.spListScroll
 import kotlinx.android.synthetic.main.fragment_main_splist.*
@@ -34,6 +32,7 @@ import kotlinx.android.synthetic.main.fragment_main_splist.*
 class main_splist : Fragment() {
     lateinit var productList : RecyclerView
     lateinit var adapter : recycler_sp_adapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -63,23 +62,10 @@ class main_splist : Fragment() {
         var spsMutable = db.daoSP().getAllSP().toMutableList()
 
         // Menambah data ke dalam recycler view
-        if (data.curRole == 'C'){
-            adapter = recycler_sp_adapter(spsMutable, requireContext()){
-                val info = Intent(requireContext(), user_spdetail::class.java)
-                info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
-                startActivity(info)
-            }
-            adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        }
-        else{
-            adapter = recycler_sp_adapter(spsMutable, requireContext()){
-                val info = Intent(requireContext(), admin_editor::class.java)
-                info.putExtra(SHOW_SPDATA_TO_EDIT, it as Parcelable)
-                startActivity(info)
-            }
-            adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        }
+        adapter = recycler_sp_adapter(spsMutable)
 
+        adapter.notifyDataSetChanged()
+//        adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         productList.layoutManager = GridLayoutManager(requireContext(), 2)
         productList.adapter = adapter
 
@@ -100,20 +86,12 @@ class main_splist : Fragment() {
                 spsMutable.clear()
                 spsMutable.addAll(filter(search.text.toString(), requireContext()))
                 if (data.curRole == 'C'){
-                    adapter = recycler_sp_adapter(spsMutable, requireContext()){
-                        val info = Intent(requireContext(), user_spdetail::class.java)
-                        info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
-                        startActivity(info)
-                    }
-                    adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                    adapter = recycler_sp_adapter(spsMutable)
+//                    adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 }
                 else{
-                    adapter = recycler_sp_adapter(spsMutable, requireContext()){
-                        val info = Intent(requireContext(), admin_editor::class.java)
-                        info.putExtra(SHOW_SPDATA_TO_EDIT, it as Parcelable)
-                        startActivity(info)
-                    }
-                    adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                    adapter = recycler_sp_adapter(spsMutable)
+//                    adapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 }
                 productList.adapter = adapter
                 countDaftar.text = "Jumlah data: ${adapter.myData.size}"
@@ -129,11 +107,7 @@ class main_splist : Fragment() {
         }
 
         fun showModifiedRec(spsMutable : MutableList<Smartphone>){
-            adapter = recycler_sp_adapter(spsMutable, requireContext()){
-                val info = Intent(requireContext(), user_spdetail::class.java)
-                info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
-                startActivity(info)
-            }
+            adapter = recycler_sp_adapter(spsMutable)
             productList.adapter = adapter
             if(spsMutable.isEmpty()){
                 nothing.visibility = View.VISIBLE
@@ -181,32 +155,35 @@ class main_splist : Fragment() {
         //Simpan posisi scroll di objek spListScroll sebelum berpindah activity atau menu
         spListScroll.posisiScroll = (productList.layoutManager as GridLayoutManager).findFirstCompletelyVisibleItemPosition()
         //Simpan adapter di objek spListScroll untuk menyimpan hasil sebelum berpindah activity atau menu
-        spListScroll.lastShown = productList.adapter as recycler_sp_adapter
+        spListScroll.lastShown = productList.adapter as recycler_sp_adapter?
     }
 
     override fun onResume() {
         super.onResume()
-
-        // Callback ini dijalakan ketika user kembali ke halaman ini atau pertama kali membuka halaman ini.
-        // Jika user kembali ke halaman ini, cek apakah adapter recycler view product_list telah disimpan sebelumnya
-        // jika ya, gunakan adaptor tersebut pada recycler view product_list
-        if ((data.curRole == 'C') and (spListScroll.lastShown != null)) {
-
-            // Ketika user kembali ke halaman ini, cek apakah adapter recycler view product_list telah disimpan sebelumnya
-            // jika ya, gunakan adaptor tersebut pada recycler view product_list
-            if ((data.curRole == 'C') and (spListScroll.lastShown != null)) {
-                adapter = spListScroll.lastShown!!
-            } else if ((data.curRole == 'A') and (spListScroll.lastShown != null)) {
+        //Jika daftar (adapter) pernah ditampilkan sebelumnya untuk customer
+        if (data.curRole == 'C'){
+            if (spListScroll.lastShown != null) {
                 adapter = spListScroll.lastShown!!
             }
-
-            productList.layoutManager = GridLayoutManager(requireContext(), 2)
-            productList.adapter = adapter
-            productList.adapter!!.notifyDataSetChanged()
-
             // Scroll ke posisi yang sama seperti sebelumnya
             (productList.layoutManager as GridLayoutManager).scrollToPosition(spListScroll.posisiScroll)
         }
+        // Ketika terjadi penghapusan data, update daftar smartphone yang ditampilkan
+        else{
+            var db = data.getRoomHelper(requireContext())
+            adapter = recycler_sp_adapter(db.daoSP().getSPLike("%${search.text.toString()}%").toMutableList())
+            productList.adapter = adapter
+            countDaftar.text = "Jumlah data: ${adapter.myData.size}"
+
+            // Scroll ke posisi yang sama seperti yang sebelumnya.
+            (productList.layoutManager as GridLayoutManager).scrollToPosition(spListScroll.posisiScroll)
+        }
+
+        productList.layoutManager = GridLayoutManager(requireContext(), 2)
+        productList.adapter = adapter
+        (productList.adapter as recycler_sp_adapter).notifyDataSetChanged()
+
+        countDaftar.text = "Jumlah data: ${adapter.myData.size}"
     }
 }
 

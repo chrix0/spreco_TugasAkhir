@@ -48,12 +48,7 @@ class main_wishlist : Fragment() {
             sps.add(db.daoSP().getSPDetail(i.idSP)[0])
         }
 
-        var adapter = recycler_sp_adapter(sps, requireContext()){
-            val info = Intent(requireContext(), user_spdetail::class.java)
-            info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
-            startActivity(info)
-        }
-
+        var adapter = recycler_sp_adapter(sps)
         productList.layoutManager = GridLayoutManager(requireContext(), 2)
         productList.adapter = adapter
 
@@ -74,11 +69,7 @@ class main_wishlist : Fragment() {
             sps.add(db.daoSP().getSPDetail(i.idSP)[0])
         }
 
-        var adapter = recycler_sp_adapter(sps, requireContext()){
-            val info = Intent(requireContext(), user_spdetail::class.java)
-            info.putExtra(SHOW_PRODUCT_INFO, it as Parcelable)
-            startActivity(info)
-        }
+        var adapter = recycler_sp_adapter(sps)
 
         productList.adapter = adapter
 

@@ -59,8 +59,8 @@ class login : AppCompatActivity() {
         // Kode ini diambil dari passSetting. Hanya digunakan untuk pengujian saja.
         // Untuk sidang nanti, commentkan kode bagian ini.
 
-//        // Pilih dataset Smartphone yang digunakan (original / test)
-//        // spList.spListType dapat diganti pada file dengan path "util/spList.kt"
+        // Pilih dataset Smartphone yang digunakan (original / test)
+        // spList.spListType dapat diganti pada file dengan path "util/spList.kt"
 //        if(spList.spListType == "original"){
 //            db.daoSPSource().deleteAllSPSource() //Untuk testing saja jangan lupa hapus
 //            db.daoSP().deleteAllSP() //Untuk testing saja jangan lupa hapus

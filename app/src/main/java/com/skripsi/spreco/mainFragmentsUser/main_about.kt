@@ -14,6 +14,7 @@ import com.skripsi.spreco.activityUser.user_editprofile
 import com.skripsi.spreco.classes.Account
 import com.skripsi.spreco.data
 import com.skripsi.spreco.data.clearStack
+import com.skripsi.spreco.util.spListScroll
 import kotlinx.android.synthetic.main.fragment_main_about.*
 
 class main_about : Fragment() {
@@ -59,6 +60,7 @@ class main_about : Fragment() {
         logout.setOnClickListener {
             var intent = Intent(requireContext(), login::class.java)
             intent.clearStack()
+            spListScroll.lastShown = null
             startActivity(intent)
         }
         edit.setOnClickListener {

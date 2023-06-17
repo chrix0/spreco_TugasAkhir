@@ -337,6 +337,9 @@ class admin_editor : AppCompatActivity() {
                 .setMessage("Apakah Anda yakin ingin menghapus data ini?")
                 .setPositiveButton("Ya") { _, _ ->
                     db.daoSP().deleteSP(produk)
+                    db.daoSPSource().deleteAllSource(sources)
+                    db.daoWishlist().deleteAllBySP(produk.idSP)
+
                     finish()
                 }
                 .setNegativeButton("Tidak"){ _, _ -> } //Tutup dialog

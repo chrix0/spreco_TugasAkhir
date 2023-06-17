@@ -109,7 +109,7 @@ class user_recsettings : AppCompatActivity() {
                 jPositif = "tinggi"
                 jNegatif = "rendah"
             }
-            compareText.text = "Smartphone dengan ${criteriaList[i]} ${iPositif} dan ${criteriaList[j]} ${jNegatif} \n\n dan \n\n Smartphone dengan ${criteriaList[i]} ${iNegatif} dan ${criteriaList[j]} ${jPositif}"
+//            compareText.text = "Smartphone dengan ${criteriaList[i]} ${iPositif} dan ${criteriaList[j]} ${jNegatif} \n\n dan \n\n Smartphone dengan ${criteriaList[i]} ${iNegatif} dan ${criteriaList[j]} ${jPositif}"
             qText.text = "Bagaimana ketertarikan Anda dalam memilih Smartphone dengan ${criteriaList[i]} ${iPositif} dan ${criteriaList[j]} ${jNegatif}?"
         }
 

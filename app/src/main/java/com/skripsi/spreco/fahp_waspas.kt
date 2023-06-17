@@ -39,11 +39,18 @@ object fahp_waspas {
         for (i in matriksPC.indices) {
             for (j in 0..i) {
                 if (i == j) {
-                    matriksTFN[i][j] = mutableListOf(1.0, 1.0, 1.0)
+                    matriksTFN[i][j] = mapTFN.getValue(1.0)
                 } else {
                     val value = matriksPC[j][i]
                     matriksTFN[j][i] = mapTFN.getValue(value)
-                    matriksTFN[i][j] = mapTFN.getValue(1.0 / value)
+
+                    if (value == 1.0){
+                        matriksTFN[i][j] = mutableListOf(1.0 / 3.0, 1.0, 1.0)
+                    }
+                    else{
+                        matriksTFN[i][j] = mapTFN.getValue(1.0 / value)
+                    }
+
                 }
             }
         }
@@ -56,10 +63,12 @@ object fahp_waspas {
 
         // Perkalian setiap nilai l, m, dan u pada TFN
         for (i in 0 until matriksTFN.size){ //Kriteria ke-i
+            println("STEP 2 FAHP")
             var l = 1.0
             var m = 1.0
             var u = 1.0
             for(j in 0 until matriksTFN[i].size){ //TFN ke-j dari Kriteria ke-i
+                println(matriksTFN[i][j].toString())
                 l *= matriksTFN[i][j][0]
                 m *= matriksTFN[i][j][1]
                 u *= matriksTFN[i][j][2]
@@ -78,6 +87,10 @@ object fahp_waspas {
             // u
             res[i][2] =  res[i][2].pow(1.0/jumlahKriteria)
         }
+
+        //Tampilkan res dalam Logcat
+        println("STEP 2 FAHP")
+        println(res.toString())
 
         return res
     }
@@ -109,6 +122,10 @@ object fahp_waspas {
 
             result.add(mutableListOf(l, m, u))
         }
+
+        //Tampilkan res dalam Logcat
+        println("STEP 3 FAHP")
+        println(result.toString())
         return result
     }
 
@@ -127,6 +144,10 @@ object fahp_waspas {
         for( i in 0 until enabledCriteria.size){ //enabledCriteria memiliki jumlah yang sama dengan variabel res
             data.bobotKriteria[enabledCriteria[i]] = res[i] // "Nama kriteria yang digunakan" -> nilai bobot kriteria
         }
+
+        println("STEP 4 FAHP")
+        println(res.toString())
+
         return res
     }
 

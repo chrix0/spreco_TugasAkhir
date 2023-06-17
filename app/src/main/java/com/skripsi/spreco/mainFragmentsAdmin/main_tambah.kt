@@ -64,6 +64,7 @@ class main_tambah : Fragment() {
     }
 
     fun code(v : View) : View{
+        var check = true
         val keTambahManual = v.findViewById<Button>(R.id.keTambahManual)
         val keTambahSpCSV = v.findViewById<Button>(R.id.keTambahSpCSV)
         val keTambahSpSourceCSV = v.findViewById<Button>(R.id.keTambahSpSourceCSV)
@@ -324,11 +325,12 @@ class main_tambah : Fragment() {
             var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.type = "text/comma-separated-values"
 
-            var check = true
             if (Build.VERSION.SDK_INT <= 28) {// Apakah menggunakan Android 9 (Pie)?
-                intent = Intent("android.intent.action.GET_CONTENT")
-                check = permissionExternal() // Lakukan pemeriksaan permission
+                intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "text/comma-separated-values"
+                check = permissionExternal() // Lakukan pemeriksaan permissio
             }
+
             if (check) { // Android 10 dan seterusnya tidak perlu permission
                 prosesCsvSP.launch(intent) // Lanjut di Langkah 2
             }
@@ -338,17 +340,15 @@ class main_tambah : Fragment() {
             var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.type = "text/comma-separated-values"
 
-            var check = true
             if (Build.VERSION.SDK_INT < 28) {
-                intent = Intent("android.intent.action.GET_CONTENT")
+                intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "text/comma-separated-values"
                 check = permissionExternal()
             }
             if (check) {
                 prosesCsvSPSource.launch(intent)
             }
         }
-
-
 
 
         keTambahSpCSV.setOnClickListener {
