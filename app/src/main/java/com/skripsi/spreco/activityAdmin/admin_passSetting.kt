@@ -27,17 +27,17 @@ class admin_passSetting : AppCompatActivity() {
         var db = data.getRoomHelper(applicationContext)
         // Pilih dataset Smartphone yang digunakan (original / test)
         // spList.spListType dapat diganti pada file dengan path "util/spList.kt"
-//        if(spList.spListType == "original"){
-////            db.daoSPSource().deleteAllSPSource() //Untuk testing saja jangan lupa hapus
-////            db.daoSP().deleteAllSP() //Untuk testing saja jangan lupa hapus
-//            db.daoSP().addAllSP(spList.list_sp)
-//            db.daoSPSource().addAllSource(spSourceList.list_source)
-//        }
-//        else{
-//            db.daoSPSource().deleteAllSPSource() //Hapus semua link untuk menghindari foreign key error
-//            db.daoSP().deleteAllSP() //Reset isi tabel Smartphone
-//            db.daoSP().addAllSP(spList.list_sp_test) //Ganti dengan list untuk testing
-//        }
+        if(spList.spListType == "original"){
+//            db.daoSPSource().deleteAllSPSource() //Untuk testing saja jangan lupa hapus
+//            db.daoSP().deleteAllSP() //Untuk testing saja jangan lupa hapus
+            db.daoSP().addAllSP(spList.list_sp)
+            db.daoSPSource().addAllSource(spSourceList.list_source)
+        }
+        else{
+            db.daoSPSource().deleteAllSPSource() //Hapus semua link untuk menghindari foreign key error
+            db.daoSP().deleteAllSP() //Reset isi tabel Smartphone
+            db.daoSP().addAllSP(spList.list_sp_test) //Ganti dengan list untuk testing
+        }
 
         var sharedpref = adminPassSharedPref(this)
 

@@ -85,4 +85,6 @@ object data {
     fun Intent.clearStack() {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     }
+
+//    var wsm_wpm_waspas : MutableList<MutableList<Double>> =  mutableListOf()
 }

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.PopupMenu
@@ -27,6 +28,7 @@ import com.skripsi.spreco.fahp_waspas.WASPAS
 import com.skripsi.spreco.fahp_waspas.makeRanking
 import com.skripsi.spreco.recyclerAdapters.recycler_recshow_adapter
 import com.skripsi.spreco.util.spList
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_user_recshow.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -201,6 +203,10 @@ class user_recshow : AppCompatActivity() {
             } else{
                 makeRanking(listDiproses, hitung).toMutableList()
             }
+
+//            var sorted_wsm_wpm_waspas = data.wsm_wpm_waspas.sortedByDescending { it[2] }
+//            var take = sorted_wsm_wpm_waspas.take(data.maxDataRec).toMutableList()
+//            Log.i("waspas", take.toString())
 
             return null
         }

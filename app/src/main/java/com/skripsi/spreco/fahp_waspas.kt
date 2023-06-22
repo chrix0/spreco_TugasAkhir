@@ -17,23 +17,41 @@ object fahp_waspas {
         val matriksTFN = MutableList(matriksPC.size) { MutableList(matriksPC.size) { mutableListOf<Double>() } }
 
         val mapTFN = mapOf(
-            1.0 to mutableListOf(1.0, 1.0, 3.0),
-            2.0 to mutableListOf(1.0, 2.0, 4.0),
-            3.0 to mutableListOf(1.0, 3.0, 5.0),
-            4.0 to mutableListOf(2.0, 4.0, 6.0),
-            5.0 to mutableListOf(3.0, 5.0, 7.0),
-            6.0 to mutableListOf(4.0, 6.0, 8.0),
-            7.0 to mutableListOf(5.0, 7.0, 9.0),
-            8.0 to mutableListOf(6.0, 8.0, 9.0),
-            9.0 to mutableListOf(7.0, 9.0, 9.0),
-            1.0 / 2.0 to mutableListOf(1.0 / 4.0, 1.0 / 2.0, 1.0),
-            1.0 / 3.0 to mutableListOf(1.0 / 5.0, 1.0 / 3.0, 1.0),
-            1.0 / 4.0 to mutableListOf(1.0 / 6.0, 1.0 / 4.0, 1.0 / 2.0),
-            1.0 / 5.0 to mutableListOf(1.0 / 7.0, 1.0 / 5.0, 1.0 / 3.0),
-            1.0 / 6.0 to mutableListOf(1.0 / 8.0, 1.0 / 6.0, 1.0 / 4.0),
-            1.0 / 7.0 to mutableListOf(1.0 / 9.0, 1.0 / 7.0, 1.0 / 5.0),
-            1.0 / 8.0 to mutableListOf(1.0 / 9.0, 1.0 / 8.0, 1.0 / 6.0),
-            1.0 / 9.0 to mutableListOf(1.0 / 9.0, 1.0 / 9.0, 1.0 / 7.0)
+            1.0 to mutableListOf(1.0, 1.0, 1.0),
+            2.0 to mutableListOf(1.0, 2.0, 3.0),
+            3.0 to mutableListOf(2.0, 3.0, 4.0),
+            4.0 to mutableListOf(3.0, 4.0, 5.0),
+            5.0 to mutableListOf(4.0, 5.0, 6.0),
+            6.0 to mutableListOf(5.0, 6.0, 7.0),
+            7.0 to mutableListOf(6.0, 7.0, 8.0),
+            8.0 to mutableListOf(7.0, 8.0, 9.0),
+            9.0 to mutableListOf(8.0, 9.0, 10.0),
+            1.0 / 2.0 to mutableListOf(1.0 / 3.0, 1.0 / 2.0, 1.0),
+            1.0 / 3.0 to mutableListOf(1.0 / 4.0, 1.0 / 3.0, 2.0),
+            1.0 / 4.0 to mutableListOf(1.0 / 5.0, 1.0 / 4.0, 1.0 / 3.0),
+            1.0 / 5.0 to mutableListOf(1.0 / 6.0, 1.0 / 5.0, 1.0 / 4.0),
+            1.0 / 6.0 to mutableListOf(1.0 / 7.0, 1.0 / 6.0, 1.0 / 5.0),
+            1.0 / 7.0 to mutableListOf(1.0 / 8.0, 1.0 / 7.0, 1.0 / 6.0),
+            1.0 / 8.0 to mutableListOf(1.0 / 9.0, 1.0 / 8.0, 1.0 / 7.0),
+            1.0 / 9.0 to mutableListOf(1.0 / 10.0, 1.0 / 9.0, 1.0 / 8.0)
+
+//            1.0 to mutableListOf(1.0, 1.0, 3.0),
+//            2.0 to mutableListOf(1.0, 2.0, 4.0),
+//            3.0 to mutableListOf(1.0, 3.0, 5.0),
+//            4.0 to mutableListOf(2.0, 4.0, 6.0),
+//            5.0 to mutableListOf(3.0, 5.0, 7.0),
+//            6.0 to mutableListOf(4.0, 6.0, 8.0),
+//            7.0 to mutableListOf(5.0, 7.0, 9.0),
+//            8.0 to mutableListOf(6.0, 8.0, 9.0),
+//            9.0 to mutableListOf(7.0, 9.0, 9.0),
+//            1.0 / 2.0 to mutableListOf(1.0 / 4.0, 1.0 / 2.0, 1.0),
+//            1.0 / 3.0 to mutableListOf(1.0 / 5.0, 1.0 / 3.0, 1.0),
+//            1.0 / 4.0 to mutableListOf(1.0 / 6.0, 1.0 / 4.0, 1.0 / 2.0),
+//            1.0 / 5.0 to mutableListOf(1.0 / 7.0, 1.0 / 5.0, 1.0 / 3.0),
+//            1.0 / 6.0 to mutableListOf(1.0 / 8.0, 1.0 / 6.0, 1.0 / 4.0),
+//            1.0 / 7.0 to mutableListOf(1.0 / 9.0, 1.0 / 7.0, 1.0 / 5.0),
+//            1.0 / 8.0 to mutableListOf(1.0 / 9.0, 1.0 / 8.0, 1.0 / 6.0),
+//            1.0 / 9.0 to mutableListOf(1.0 / 9.0, 1.0 / 9.0, 1.0 / 7.0)
         )
 
         for (i in matriksPC.indices) {
@@ -63,12 +81,10 @@ object fahp_waspas {
 
         // Perkalian setiap nilai l, m, dan u pada TFN
         for (i in 0 until matriksTFN.size){ //Kriteria ke-i
-            println("STEP 2 FAHP")
             var l = 1.0
             var m = 1.0
             var u = 1.0
             for(j in 0 until matriksTFN[i].size){ //TFN ke-j dari Kriteria ke-i
-                println(matriksTFN[i][j].toString())
                 l *= matriksTFN[i][j][0]
                 m *= matriksTFN[i][j][1]
                 u *= matriksTFN[i][j][2]
@@ -89,8 +105,6 @@ object fahp_waspas {
         }
 
         //Tampilkan res dalam Logcat
-        println("STEP 2 FAHP")
-        println(res.toString())
 
         return res
     }
@@ -124,8 +138,6 @@ object fahp_waspas {
         }
 
         //Tampilkan res dalam Logcat
-        println("STEP 3 FAHP")
-        println(result.toString())
         return result
     }
 
@@ -144,9 +156,6 @@ object fahp_waspas {
         for( i in 0 until enabledCriteria.size){ //enabledCriteria memiliki jumlah yang sama dengan variabel res
             data.bobotKriteria[enabledCriteria[i]] = res[i] // "Nama kriteria yang digunakan" -> nilai bobot kriteria
         }
-
-        println("STEP 4 FAHP")
-        println(res.toString())
 
         return res
     }
@@ -307,6 +316,7 @@ object fahp_waspas {
 
             // 0.5 * WSM + 0.5 * WPM
             var qiValue = 0.5 * wsm + 0.5 * wpm
+//            wsm_wpm_waspas.add(mutableListOf(wsm, wpm, qiValue))
             res.add(qiValue)
         }
         return res
