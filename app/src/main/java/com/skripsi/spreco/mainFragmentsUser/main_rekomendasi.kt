@@ -41,9 +41,18 @@ class main_rekomendasi : Fragment() {
             startActivity(intent)
         }
         rec_show.setOnClickListener {
-            if (data.settingDone){ //PERBAIKI INI
-                var intent = Intent(requireContext(), user_recshow::class.java)
-                startActivity(intent)
+            if (data.settingDone){
+                // Periksa apakah terdapat minimal 1 data smartphone tersedia.
+                // Kalau tidak ada, rekomendasi tidak dapat diberikan.
+                var db = data.getRoomHelper(requireContext())
+                var jlhData = db.daoSP().getAllSP().size
+                if (jlhData == 0){
+                    Toast.makeText(requireContext(),"Tidak ada data smartphone.\nPemberian rekomendasi tidak dapat dilakukan.", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    var intent = Intent(requireContext(), user_recshow::class.java)
+                    startActivity(intent)
+                }
             }
             else{
                 Toast.makeText(requireContext(),"Anda harus melakukan Step 1 terlebih dahulu.", Toast.LENGTH_LONG).show()

@@ -1,11 +1,13 @@
 package com.skripsi.spreco
 
+import android.util.Log
 import com.skripsi.spreco.classes.Smartphone
 import com.skripsi.spreco.classes.SP_rank
 import com.skripsi.spreco.classes.SP_rec
 import com.skripsi.spreco.data.caraHitung
 import com.skripsi.spreco.data.enabledCriteria
 import com.skripsi.spreco.data.enabledCriteriaType
+import java.text.DecimalFormat
 import kotlin.math.pow
 
 object fahp_waspas {
@@ -61,14 +63,7 @@ object fahp_waspas {
                 } else {
                     val value = matriksPC[j][i]
                     matriksTFN[j][i] = mapTFN.getValue(value)
-
-                    if (value == 1.0){
-                        matriksTFN[i][j] = mutableListOf(1.0 / 3.0, 1.0, 1.0)
-                    }
-                    else{
-                        matriksTFN[i][j] = mapTFN.getValue(1.0 / value)
-                    }
-
+                    matriksTFN[i][j] = mapTFN.getValue(1.0 / value)
                 }
             }
         }
@@ -156,6 +151,14 @@ object fahp_waspas {
         for( i in 0 until enabledCriteria.size){ //enabledCriteria memiliki jumlah yang sama dengan variabel res
             data.bobotKriteria[enabledCriteria[i]] = res[i] // "Nama kriteria yang digunakan" -> nilai bobot kriteria
         }
+
+        var text = ""
+        var decFormat = DecimalFormat("#.#")
+        for (i in 0 until res.size){
+            var nilai = res[i] * 100
+            text += "- ${enabledCriteria[i]} - ${decFormat.format(nilai)}%\n"
+        }
+        Log.i("bobot", text)
 
         return res
     }

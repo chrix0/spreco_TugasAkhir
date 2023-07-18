@@ -95,18 +95,13 @@ class user_toggleKriteria : AppCompatActivity() {
 
         saveToggle.setOnClickListener {
             //Cek apakah jumlah kriteria yang hidup lebih dari 1
-            var count = 0
+            var count = 0 //jlh kriteria
             criteriaStatus.forEach { (key, value) ->
                 if (value)
                     count += 1
             }
 
-            if (filterHarga.isChecked and
-                filterStart.text.toString().isEmpty() and
-                filterEnd.text.toString().isEmpty()){
-                Toast.makeText(this, "Mohon hilangkan centang Filter Harga terlebih dahulu jika tidak digunakan.", Toast.LENGTH_SHORT).show()
-            }
-            else if (count < 2){
+            if (count < 2){
                 Toast.makeText(this, "Jumlah kriteria rekomendasi yang digunakan harus lebih dari satu.", Toast.LENGTH_SHORT).show()
             }
             else if (dataMax.text.toString().isEmpty()){
@@ -132,31 +127,50 @@ class user_toggleKriteria : AppCompatActivity() {
                     // Selain kedua syarat tersebut, tidak ada proses yang dilakukan
                 }
 
+                var filterHargaValid = false
+                //Input filter harga valid jika..
+                // - Nilai batas bawah lebih kecil dari nilai batas atas
+                // - Filter harga tidak dihidupkan, dan text box filter harga tidak diisi,
                 if(filterHarga.isChecked){
                     data.filterHargaChecked = true
-                    data.hargaRangeAtas = filterEnd.text.toString().toInt()
-                    data.hargaRangeBawah = filterStart.text.toString().toInt()
+                    if (filterStart.text.toString().isEmpty() or
+                        filterEnd.text.toString().isEmpty()){
+                        filterHargaValid = false
+                        Toast.makeText(this, "Isi batas awal harga dan batas akhir harga untuk filter harga", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        data.hargaRangeAtas = filterEnd.text.toString().toInt()
+                        data.hargaRangeBawah = filterStart.text.toString().toInt()
+                        if (data.hargaRangeAtas  < data.hargaRangeBawah){
+                            Toast.makeText(this, "Nilai batas awal filter harga harus lebih besar dari nilai batas akhir", Toast.LENGTH_SHORT).show()
+                        }
+                        else
+                            filterHargaValid = true
+                    }
                 }
                 else{
                     data.filterHargaChecked = false
+                    filterHargaValid = true
                     data.hargaRangeAtas = -1
                     data.hargaRangeBawah = -1
                 }
 
-                data.criteriaList = criteriaStatus
-                data.maxDataRec = dataMax.text.toString().toInt()
-                Toast.makeText(this, "Pengaturan Anda telah berhasil disimpan.", Toast.LENGTH_SHORT).show()
+                if (filterHargaValid){
+                    data.criteriaList = criteriaStatus
+                    data.maxDataRec = dataMax.text.toString().toInt()
+                    Toast.makeText(this, "Pengaturan Anda telah berhasil disimpan.", Toast.LENGTH_SHORT).show()
 
-                //Ambil semua key yang bernilai true di data.criteriaList. Masukkan ke dalam data.enabledCriteria
-                data.enabledCriteria = mutableListOf()
-                data.criteriaList.forEach { (key, value) ->
-                    if (value){ //jika true
-                        data.enabledCriteria.add(key)
-                    }
-                } //Sampai di sini, enabledCriteria sudah memiliki kriteria yang berurutan
+                    //Ambil semua key yang bernilai true di data.criteriaList. Masukkan ke dalam data.enabledCriteria
+                    data.enabledCriteria = mutableListOf()
+                    data.criteriaList.forEach { (key, value) ->
+                        if (value){ //jika true
+                            data.enabledCriteria.add(key)
+                        }
+                    } //Sampai di sini, enabledCriteria sudah memiliki kriteria yang berurutan
 
-                var intent = Intent(this, user_recsettings::class.java)
-                startActivity(intent)
+                    var intent = Intent(this, user_recsettings::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }

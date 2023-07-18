@@ -132,15 +132,17 @@ class main_manageCustomer : Fragment() {
                     true
                 }
                 R.id.lastLogin_asc ->{
+                    // Ascending, urutkan secara descending (Dari yang terbaru hingga terlama)
                     val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
                     temp.sortWith(compareBy { LocalDateTime.parse(it.terakhirLogin, formatter) })
+                    temp.reverse()
                     showModifiedRec(temp)
                     true
                 }
                 R.id.lastLogin_des ->{
+                    // Descending, urutkan secara ascending (Dari yang terlama hingga terbaru)
                     val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
                     temp.sortWith(compareBy { LocalDateTime.parse(it.terakhirLogin, formatter) })
-                    temp.reverse()
                     showModifiedRec(temp)
                     true
                 }

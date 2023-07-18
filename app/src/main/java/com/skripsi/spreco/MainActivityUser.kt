@@ -11,7 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.skripsi.spreco.databinding.ActivityMainUserBinding
-import kotlinx.android.synthetic.main.activity_main_user.*
+//import kotlinx.android.synthetic.main.activity_main_user.*
 
 class MainActivityUser : AppCompatActivity() {
 
@@ -21,6 +21,7 @@ class MainActivityUser : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainUserBinding.inflate(layoutInflater)
+        var navBottom = binding.navBottom
         setContentView(binding.root)
 
         val navController = findNavController(R.id.fragmentContainerView)
