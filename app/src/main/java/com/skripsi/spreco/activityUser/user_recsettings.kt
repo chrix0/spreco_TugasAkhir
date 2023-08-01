@@ -85,7 +85,7 @@ class user_recsettings : AppCompatActivity() {
         }
 
 
-        @SuppressLint("SetTextI18n")
+//        @SuppressLint("SetTextI18n")
         fun next(i : Int, j : Int, total : Int, criteriaList : MutableList<String>, posisi : Int){
             askCount.text = "Pertanyaan $posisi dari $total."
             var iPositif = ""

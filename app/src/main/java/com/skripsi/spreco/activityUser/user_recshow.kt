@@ -244,6 +244,7 @@ class user_recshow : AppCompatActivity() {
             rankingList.layoutManager = LinearLayoutManager(this@user_recshow)
             rankingList.adapter = adapter
 
+            // Simpan hasil ke dalam database dalam bentuk json..
             var hasilToJSON= Gson().toJson(hasil)
             var bobotKriteriaToJSON = Gson().toJson(data.bobotKriteria)
             var pcmJSON = Gson().toJson(data.pcm)

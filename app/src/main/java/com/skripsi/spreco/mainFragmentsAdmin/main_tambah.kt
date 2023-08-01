@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_rechistory.*
 import kotlinx.android.synthetic.main.recycler_rekomendasi_res.*
+import java.io.IOException
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -111,7 +113,7 @@ class main_tambah : Fragment() {
 
 
         //Langkah 3 - Baris dalam CSV menjadi Data Smartphone
-        fun readCsvSP(inputStream: InputStream): MutableList<Smartphone> {
+        fun readCsvSP(inputStream: InputStream) {
             val reader = inputStream.bufferedReader()
             val header = reader.readLine()
             val res = mutableListOf<Smartphone>()
@@ -121,107 +123,225 @@ class main_tambah : Fragment() {
                 var done = false
                 var idxKolom = 0
                 var idxBaris = 0
-                try {
+                kotlin.run reader@{
                     reader.lineSequence()
                         .filter { it.isNotBlank() }
                         .forEachIndexed { indexBaris, line ->
-                            val columns = line.split(';', ignoreCase = true)
+                            try {
+                                val columns = line.split(';', ignoreCase = true)
+                                idxBaris = indexBaris
+                                idxKolom = 0
 
-                            idxBaris = indexBaris
-                            idxKolom = 0
-                            var idSP = columns[idxKolom].toInt(); idxKolom++
-                            var namasp = columns[idxKolom]; idxKolom++
-                            var merek = columns[idxKolom]; idxKolom++
-                            var harga = columns[idxKolom].toInt(); idxKolom++
-                            var network = columns[idxKolom];idxKolom++
-                            var sim = columns[idxKolom];idxKolom++
-                            var tdisplay = columns[idxKolom];idxKolom++
-                            var udisplay = columns[idxKolom].toDouble();idxKolom++
-                            var OS = columns[idxKolom];idxKolom++
-                            var chipset = columns[idxKolom];idxKolom++
-                            var cpu = columns[idxKolom];idxKolom++
-                            var gpu = columns[idxKolom];idxKolom++
-                            var ram = columns[idxKolom].toInt();idxKolom++
-                            var rom = columns[idxKolom].toInt();idxKolom++
-                            var mainCam = columns[idxKolom].toDouble();idxKolom++
-                            var selfieCam = columns[idxKolom].toDouble();idxKolom++
-                            var battery = columns[idxKolom].toInt();idxKolom++
-                            var warna = columns[idxKolom];idxKolom++
-                            var tglrilis = columns[idxKolom];idxKolom++
-                            var urlpic = columns[idxKolom];idxKolom++
+                                var idSP = 0
+                                var namasp = ""
+                                var merek = ""
+                                var harga = 0
+                                var network = ""
+                                var sim = ""
+                                var tdisplay = ""
+                                var udisplay = 0.0
+                                var OS = ""
+                                var chipset = ""
+                                var cpu = ""
+                                var gpu = ""
+                                var ram = 0
+                                var rom = 0
+                                var mainCam = 0.0
+                                var selfieCam = 0.0
+                                var battery = 0
+                                var warna = ""
+                                var tglrilis = ""
+                                var urlpic = ""
 
-                            val smartphone = Smartphone(
-                                idSP,
-                                namasp,
-                                merek,
-                                harga,
-                                network,
-                                sim,
-                                tdisplay,
-                                udisplay,
-                                OS,
-                                chipset,
-                                cpu,
-                                gpu,
-                                ram,
-                                rom,
-                                mainCam,
-                                selfieCam,
-                                battery,
-                                warna,
-                                tglrilis,
-                                urlpic
-                            )
-                            res.add(smartphone)
-                            countData++
-                            done = true
+                                if (!columns[idxKolom].isDigitsOnly())
+                                    throw Exception("ID_INVALID")
+                                else
+                                    idSP = columns[idxKolom].toInt()
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("NAMA_INVALID")
+                                else
+                                    namasp = columns[idxKolom]
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("MEREK_INVALID")
+                                else
+                                    merek = columns[idxKolom]
+                                idxKolom++
+
+                                if (!columns[idxKolom].isDigitsOnly())
+                                    throw Exception("HARGA_INVALID")
+                                else
+                                    harga = columns[idxKolom].toInt()
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("NETWORK_INVALID")
+                                else
+                                    network = columns[idxKolom]
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("SIM_INVALID")
+                                else
+                                    sim = columns[idxKolom]
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("TIPE_DISPLAY_INVALID")
+                                else
+                                    tdisplay = columns[idxKolom]
+                                idxKolom++
+
+                                //Input double tidak perlu throw Exception
+                                udisplay = columns[idxKolom].toDouble()
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("OS_INVALID")
+                                else
+                                    OS = columns[idxKolom]
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("CHIPSET_INVALID")
+                                else
+                                    chipset = columns[idxKolom]
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("CPU_INVALID")
+                                else
+                                    cpu = columns[idxKolom]
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("GPU_INVALID")
+                                else
+                                    gpu = columns[idxKolom]
+                                idxKolom++
+
+                                if (!columns[idxKolom].isDigitsOnly())
+                                    throw Exception("RAM_INVALID")
+                                else
+                                    ram = columns[idxKolom].toInt()
+                                idxKolom++
+
+                                if (!columns[idxKolom].isDigitsOnly())
+                                    throw Exception("ROM_INVALID")
+                                else
+                                    rom = columns[idxKolom].toInt()
+                                idxKolom++
+
+                                mainCam = columns[idxKolom].toDouble()
+                                idxKolom++
+                                selfieCam = columns[idxKolom].toDouble()
+                                idxKolom++
+
+                                if (!columns[idxKolom].isDigitsOnly())
+                                    throw Exception("BATTERY_INVALID")
+                                else
+                                    battery = columns[idxKolom].toInt()
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("WARNA_INVALID")
+                                else
+                                    warna = columns[idxKolom]
+                                idxKolom++
+
+                                if (columns[idxKolom].isEmpty())
+                                    throw Exception("TGL_RILIS_INVALID")
+                                else
+                                    tglrilis = columns[idxKolom]
+                                idxKolom++
+
+                                // tidak perlu pengecekan kosong atau tidak.
+                                urlpic = columns[idxKolom]
+                                idxKolom++
+
+                                val smartphone = Smartphone(
+                                    idSP,
+                                    namasp,
+                                    merek,
+                                    harga,
+                                    network,
+                                    sim,
+                                    tdisplay,
+                                    udisplay,
+                                    OS,
+                                    chipset,
+                                    cpu,
+                                    gpu,
+                                    ram,
+                                    rom,
+                                    mainCam,
+                                    selfieCam,
+                                    battery,
+                                    warna,
+                                    tglrilis,
+                                    urlpic
+                                )
+                                res.add(smartphone)
+                                countData++
+                                done = true
+                            } catch (e: Exception) {
+                                done = false
+                                val columnNames = listOf(
+                                    "idSP",
+                                    "namaSP",
+                                    "merek",
+                                    "harga",
+                                    "network",
+                                    "sim",
+                                    "tDisplay",
+                                    "uDisplay",
+                                    "OS",
+                                    "chipset",
+                                    "cpu",
+                                    "gpu",
+                                    "ram",
+                                    "rom",
+                                    "mainCam",
+                                    "selfieCam",
+                                    "battery",
+                                    "warna",
+                                    "tglRilis",
+                                    "picURL"
+                                )
+
+                                // Pesan error yang diberikan
+                                val errorDetails =
+                                    "Terdapat error pada baris ke-${idxBaris + 1}, kolom ${columnNames[idxKolom].uppercase()}:\nInput tidak sesuai dengan format atau kosong. Silahkan baca kembali panduan CSV yang diberikan pada halaman ini. "
+                                Toast.makeText(
+                                    requireContext(),
+                                    errorDetails,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                return@reader
+                            }
                         }
-                } catch (e: Exception) {
-                    done = false
-                    val columnNames = listOf(
-                        "idSP",
-                        "namaSP",
-                        "merek",
-                        "harga",
-                        "network",
-                        "sim",
-                        "tDisplay",
-                        "uDisplay",
-                        "OS",
-                        "chipset",
-                        "cpu",
-                        "gpu",
-                        "ram",
-                        "rom",
-                        "mainCam",
-                        "selfieCam",
-                        "battery",
-                        "warna",
-                        "tglRilis",
-                        "picURL"
-                    )
-
-                    // Pesan error yang diberikan
-                    val errorDetails =
-                        "Terdapat error pada baris ke-${idxBaris + 1}, kolom ${columnNames[idxKolom].uppercase()}:\nInput tidak sesuai dengan format. Silahkan baca kembali panduan CSV yang diberikan pada halaman ini. "
-                    Toast.makeText(requireContext(), errorDetails, Toast.LENGTH_LONG).show()
-                }
-
-                if (done) {
-                    //Tambah data
-                    var db = data.getRoomHelper(requireContext())
-                    db.daoSP().addAllSP(res)
-                    Toast.makeText(requireContext(), "${res.size} data Smartphone telah ditambahkan.", Toast.LENGTH_LONG).show()
+                    if (done) {
+                        //Tambah data
+                        var db = data.getRoomHelper(requireContext())
+                        db.daoSP().addAllSP(res)
+                        Toast.makeText(
+                            requireContext(),
+                            "${res.size} data Smartphone telah ditambahkan.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
             else{
                 Toast.makeText(
                     requireContext(),
-                    "Header CSV harus berisi: \n'idSP;namaSP;merek;harga;network;sim;tDisplay;uDisplay;OS;chipset;\ncpu;gpu;ram;rom;mainCam;selfieCam;battery;warna;tanggalRilis;picURL'",
-                    Toast.LENGTH_LONG
+                    "Header CSV harus mengandung: \n'idSP;namaSP;merek;harga;network;sim;tDisplay;uDisplay;OS;chipset;cpu;gpu;ram;rom;mainCam;selfieCam;battery;warna;tanggalRilis;picURL'",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
-            return res
         }
 
         fun readCsvSPSource(inputStream: InputStream): MutableList<SPSource> {
@@ -229,54 +349,107 @@ class main_tambah : Fragment() {
             val header = reader.readLine()
             var resSource = mutableListOf<SPSource>()
             var countData = 0
-            if (header == "idSource;idSP;source;sourceLink;dateAdded") {
+            if (header == "idSource;idSP;source;sourceLink;") {
                 var done = false
                 var idxKolom = 0
                 var idxBaris = 0
+                var db = data.getRoomHelper(requireContext())
 
-                reader.lineSequence()
-                    .filter { it.isNotBlank() }
-                    .forEachIndexed { indexBaris, line ->
-                        try {
-                            val columns = line.split(';', ignoreCase = true)
+                kotlin.run loop@{
+                    reader.lineSequence()
+                        .filter { it.isNotBlank() }
+                        .forEachIndexed{ indexBaris, line ->
+                            try {
+                                val columns = line.split(';', ignoreCase = true)
 
-                            idxBaris = indexBaris
-                            idxKolom = 0
-                            var idSource = columns[idxKolom].toInt(); idxKolom++
-                            var idSP = columns[idxKolom].toInt(); idxKolom++
-                            var source = columns[idxKolom];idxKolom++
-                            var sourceLink = columns[idxKolom];idxKolom++
+                                idxBaris = indexBaris
+                                idxKolom = 0
 
+                                var idSource: Int = 0
+                                var idSP: Int = 0
 
-                            var sourceObj = SPSource(
-                                idSource, idSP, source, sourceLink,
-                                getCurrentDateTime()
-                            )
-                            resSource.add(sourceObj)
-                            countData++
-                            done = true
-                        } catch (e: Exception) {
-                            done = false
-                            val columnNames = listOf(
-                                "idSource", "idSP", "source", "sourceLink", "dateAdded"
-                            )
-                            // Pesan error yang diberikan
-                            val errorDetails =
-                                "Terdapat error pada baris ke-${idxBaris + 1}, kolom ${columnNames[idxKolom].uppercase()}:\nInput tidak sesuai dengan format. Silahkan baca kembali panduan CSV yang diberikan pada halaman ini. "
-                            Toast.makeText(requireContext(), errorDetails, Toast.LENGTH_LONG).show()
+                                var idSourceStr = columns[idxKolom];
+
+                                //Jika terdapat karakter selain angka pada ID Source Link..
+                                if (!idSourceStr.isDigitsOnly()) {
+                                    throw Exception("ID_INVALID") //Munculkan error
+                                } else {
+                                    idSource = idSourceStr.toInt() //Jika tidak, ubah jadi integer
+                                }
+                                idxKolom++
+
+                                var idSPStr = columns[idxKolom];
+                                if (!idSPStr.isDigitsOnly()) {
+                                    throw Exception("ID_INVALID")
+                                } else {
+                                    idSP = idSPStr.toInt()
+                                }
+                                idxKolom++
+
+                                var source = columns[idxKolom]
+                                if (source.isEmpty())
+                                    throw Exception("NO_INPUT")
+                                idxKolom++
+
+                                var sourceLink = columns[idxKolom]
+                                if (sourceLink.isEmpty())
+                                    throw Exception("NO_INPUT")
+                                idxKolom++
+
+                                var sourceObj = SPSource(
+                                    idSource, idSP, source, sourceLink,
+                                    getCurrentDateTime()
+                                )
+
+                                //Lihat apakah idSP yang diinput tersedia di dalam database sistem
+                                if (!db.daoSP().getSPDetail(idSP).isNullOrEmpty()) {
+                                    resSource.add(sourceObj)
+                                    countData++
+                                    done = true
+                                } else {
+                                    throw Exception("NOT_FOUND")
+                                }
+
+                            } catch (e: Exception) {
+                                done = false
+                                val columnNames = listOf(
+                                    "idSource", "idSP", "source", "sourceLink"
+                                )
+                                if (e.message == "NOT_FOUND") {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "ID Data Smartphone pada baris ke ${idxBaris + 1} tidak ditemukan",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                } else {
+                                    // Pesan error yang diberikan
+                                    val errorDetails =
+                                        "Terdapat error pada baris ke-${idxBaris + 1}, kolom ${columnNames[idxKolom].uppercase()}:\nInput tidak sesuai dengan format atau kosong. Silahkan baca kembali panduan CSV yang diberikan pada halaman ini. "
+                                    Toast.makeText(
+                                        requireContext(),
+                                        errorDetails,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                                return@loop
+                            }
                         }
-                    }
 
-                if (done) {
-                    var db = data.getRoomHelper(requireContext())
-                    db.daoSPSource().addAllSource(resSource)
-                    Toast.makeText(requireContext(), "${resSource.size} data Sumber Pembelian Smartphone telah ditambahkan.", Toast.LENGTH_LONG).show()
+                    if (done) {
+                        var db = data.getRoomHelper(requireContext())
+                        db.daoSPSource().addAllSource(resSource)
+                        Toast.makeText(
+                            requireContext(),
+                            "${resSource.size} data Sumber Pembelian Smartphone telah ditambahkan.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
             else{
                 Toast.makeText(
                     requireContext(),
-                    "Header CSV harus mengandung: \n'idSource;idSP;source;sourceLink;dateAdded'",
+                    "Header CSV harus mengandung: \n'idSource;idSP;source;sourceLink;'",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -322,10 +495,11 @@ class main_tambah : Fragment() {
         // Proses Pembacaan CSV
         // Langkah 1 - Pencarian file CSV
         fun openFileManagerSP() {
-            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            //MIME Types: https://android.googlesource.com/platform/external/mime-support/+/9817b71a54a2ee8b691c1dfa937c0f9b16b3473c/mime.types
+            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT) //Intent untuk Android 10 dan di atasnya
             intent.type = "text/comma-separated-values"
 
-            if (Build.VERSION.SDK_INT <= 28) {// Apakah menggunakan Android 9 (Pie)?
+            if (Build.VERSION.SDK_INT <= 28) {// Apakah menggunakan Android 9 (Pie) atau di bawahnya?
                 intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "text/comma-separated-values"
                 check = permissionExternal() // Lakukan pemeriksaan permissio
@@ -337,10 +511,11 @@ class main_tambah : Fragment() {
         }
 
         fun openFileManagerSPSource() {
-            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-            intent.type = "text/comma-separated-values"
+            //MIME Types: https://android.googlesource.com/platform/external/mime-support/+/9817b71a54a2ee8b691c1dfa937c0f9b16b3473c/mime.types
+            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT) //Intent untuk Android 10 dan di atasnya
+            intent.type = "text/comma-separated-values" //atau text/csv juga bisa
 
-            if (Build.VERSION.SDK_INT < 28) {
+            if (Build.VERSION.SDK_INT < 28) { // Apakah menggunakan Android 9 (Pie) atau di bawahnya?
                 intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "text/comma-separated-values"
                 check = permissionExternal()
@@ -390,34 +565,34 @@ class main_tambah : Fragment() {
 
             textSP.text = "Anda dapat mengedit template CSV Spesifikasi Smartphone dengan Microsoft Excel atau dengan aplikasi text editor. Contoh pengisian data tersedia pada baris kedua dari file CSV tersebut.\n\n" +
                     "Keterangan setiap kolom:\n" +
-                    "- idSP : Nomor ID unik data smartphone.\n" +
-                    "- namaSP : Nama smartphone\n" +
-                    "- merek : Nama merek smartphone\n" +
-                    "- harga : Harga Smartphone dalam rupiah. \n" +
-                    "- network : Jaringan seluler smartphone yang didukung\n" +
-                    "- sim : Jumlah sim yang dapat dimasukkan\n" +
-                    "- tDisplay: Tipe layar smartphone\n" +
-                    "- uDisplay: Ukuran layar smartphone dalam satuan inci.  \n" +
-                    "- OS : Sistem Operasi yang digunakan.\n" +
-                    "- chipset : Chipset yang digunakan\n" +
-                    "- cpu : CPU yang digunakan\n" +
-                    "- gpu : GPU yang digunakan\n" +
-                    "- ram : Kapasitas RAM dalam satuan GB\n" +
-                    "- rom : Kapasitas ROM dalam satuan GB\n" +
-                    "- mainCam : Resolusi kamera belakang dalam satuan MP.\n" +
-                    "- selfieCam : Resolusi kamera depan dealam satuan MP\n" +
-                    "- battery: Kapasitas baterai dalam satuan mAH\n" +
-                    "- warna: Warna yang tersedia\n" +
-                    "- tanggalRilis: Tanggal smartphone dirilis.\n" +
-                    "- picURL: Link gambar yang akan ditampilkan dalam aplikasi. Gambar dapat berekstensi JPG, JPEG, atau PNG\n\n" +
+                    "- idSP : Nomor ID unik data smartphone. Gunakan dengan Bilangan asli, seperti 1, 2, 3, dst. Wajib diisi.\n" +
+                    "- namaSP : Nama smartphone. Wajib diisi.\n" +
+                    "- merek : Nama merek smartphone. Wajib diisi.\n" +
+                    "- harga : Harga Smartphone dalam rupiah (Bilangan asli). Wajib diisi. \n" +
+                    "- network : Jaringan seluler smartphone yang didukung. Wajib diisi.\n" +
+                    "- sim : Jumlah sim yang dapat dimasukkan. Wajib diisi.\n" +
+                    "- tDisplay: Tipe layar smartphone. Wajib diisi.\n" +
+                    "- uDisplay: Ukuran layar smartphone dalam satuan inci. Wajib diisi.  \n" +
+                    "- OS : Sistem Operasi yang digunakan. Wajib diisi.\n" +
+                    "- chipset : Chipset yang digunakan. Wajib diisi.\n" +
+                    "- cpu : CPU yang digunakan. Wajib diisi.\n" +
+                    "- gpu : GPU yang digunakan. Wajib diisi.\n" +
+                    "- ram : Kapasitas RAM dalam satuan GB. Wajib diisi.\n" +
+                    "- rom : Kapasitas ROM dalam satuan GB. Wajib diisi.\n" +
+                    "- mainCam : Resolusi kamera belakang dalam satuan MP. Wajib diisi.\n" +
+                    "- selfieCam : Resolusi kamera depan dealam satuan MP. Wajib diisi.\n" +
+                    "- battery: Kapasitas baterai dalam satuan mAH. Wajib diisi.\n" +
+                    "- warna: Warna yang tersedia. Wajib diisi.\n" +
+                    "- tanggalRilis: Tanggal smartphone dirilis. Wajib diisi.\n" +
+                    "- picURL: Link gambar yang akan ditampilkan dalam aplikasi. Gambar dapat berekstensi JPG, JPEG, atau PNG. Opsional, dapat dikosongkan.\n\n" +
                     "Untuk pengisian kolom yang menggunakan angka desimal, gunakan tanda titik (“.”) sebagai tanda desimal. Hindari penggunaan tanda koma (“,”) sebagai tanda desimal karena dapat menyebabkan error."
 
             textSPSource.text = "Anda dapat mengedit template CSV Sumber Pembelian Smartphone dengan Microsoft Excel atau dengan aplikasi text editor. Contoh pengisian data tersedia pada baris kedua dari file CSV tersebut.\n\n" +
                     "Keterangan setiap kolom:\n" +
-                    "- idSource : Nomor ID unik link sumber pembelian\n" +
-                    "- idSP : Nomor ID Smartphone yang akan diberi link pembelian.\n" +
-                    "- source : Nama website tempat pembelian\n" +
-                    "- sourceLink : URL link pembelian"
+                    "- idSource : Nomor ID unik link sumber pembelian. Wajib diisi.\n" +
+                    "- idSP : Nomor ID Smartphone yang akan diberi link pembelian. Wajib diisi.\n" +
+                    "- source : Nama website tempat pembelian. Wajib diisi.\n" +
+                    "- sourceLink : URL link pembelian. Wajib diisi."
 
             creator.show()
         }
