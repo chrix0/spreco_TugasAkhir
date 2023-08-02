@@ -28,65 +28,69 @@ class user_recsettings_history : AppCompatActivity() {
         actionbar!!.title = "Rekomendasi"
         actionbar.setDisplayHomeAsUpEnabled(true)
 
+        //Ambil data kriteria dan bobot, yang masih dalam bentuk JSON
         val getHistory : recHistory = intent.getParcelableExtra<Parcelable>(SHOW_PAST_REC_SETTINGS) as recHistory
-
         val pieEntries: ArrayList<PieEntry> = ArrayList()
         val label = ""
 
-        //initializing data
-
+        // Siapkan typeToken untuk konversi string JSON menjadi MutableMap
         val typeToken = object : TypeToken<MutableMap<String, Double>>() {}.type
+        // Ubah JSON menjadi bentuk MutableMap<String, Double> (String sebagai key, Double sebagai value)
         val bobotKriteriaList = Gson().fromJson<MutableMap<String, Double>>(getHistory.criteriaList, typeToken)
 
-        //input data and fit data into pie chart entry
-
-        //input data and fit data into pie chart entry
+        // Masukkan nilai value setiap key, serta nama key (kriterianya) ke dalam pieEntries
         for (kriteria in bobotKriteriaList.keys) {
             pieEntries.add(PieEntry(bobotKriteriaList[kriteria]!!.toFloat(), kriteria))
         }
 
-        //collecting the entries with label name
+        // Hubungkan semua pieEntries dengan label kosong (Labelnya sudah tersedia di pieEntries)
         val pieDataSet = PieDataSet(pieEntries, label)
-        //setting text size of the value
+
+        // Ukuran teks label
         pieDataSet.valueTextSize = 12f
-        //providing color list for coloring different entries
+
+        // Membuat warna-warna yang digunakan dalam pieChart
         fun generateColors(): List<Int> {
+            // Warna ditentukan dengan Hue Saturation Color (HSV)
             val colors = mutableListOf<Int>()
-            val colorCount = 8 // the number of colors you want to generate
+            val colorCount = 8 // Buat 8 warna
 
             for (i in 0 until colorCount) {
                 val hsv = FloatArray(3)
-                hsv[0] = (i * 360f / colorCount) % 360 // generate hues evenly spaced around the color wheel
-                hsv[1] = 0.7f // set the saturation to 70%
-                hsv[2] = 0.9f // set the brightness to 90%
-                colors.add(Color.HSVToColor(hsv))
+                hsv[0] = (i * 360f / colorCount) % 360 // Hue: Diambil berdasarkan posisi color wheel dengan rumus ini
+                hsv[1] = 0.7f // Saturation: 70%
+                hsv[2] = 0.9f // Brightness: 90%
+                colors.add(Color.HSVToColor(hsv)) //Ubah HSV ke warna yang dapat diproses aplikasi
             }
             return colors
         }
-        pieDataSet.colors = generateColors()
-        //grouping the data set from entry to chart
-        val pieData = PieData(pieDataSet)
-        //showing the value of the entries, default true if not set
-        pieData.setDrawValues(true)
-        pieData.setValueFormatter(PercentFormatter(pieChartBobot))
 
+        pieDataSet.colors = generateColors() //Berisi 8 warna
+
+        //Masukkan dataset ke dalam PieData
+        val pieData = PieData(pieDataSet)
+
+        //Munculkan nilai bobot dalam bentuk persen dalam piechart
+        pieData.setDrawValues(true)
+        pieData.setValueFormatter(PercentFormatter(pieChartBobot)) //Tambahkan tanda persen di belakangnya
+
+        //pieChartBobot: Elemen piechart di view
+        //Tambahkan legenda yang disusun secara vertikal
         val legend: Legend = pieChartBobot.legend
-//        legend.orientation = Legend.LegendOrientation.VERTICAL
         legend.setDrawInside(false)
-        legend.yOffset = 25f;//here value changes
+        legend.yOffset = 25f;
         legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM;
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT;
         legend.isWordWrapEnabled = true
         legend.textSize = 13f
         legend.orientation = Legend.LegendOrientation.VERTICAL
 
-
-
+        // Masukkan data ke dalam piechart
         pieChartBobot.data = pieData
         pieChartBobot.setUsePercentValues(true);
         pieChartBobot.setEntryLabelColor(Color.BLACK);
         pieChartBobot.description.isEnabled = false
-        pieChartBobot.invalidate()
+        pieChartBobot.invalidate() //Refresh untuk memunculkan data kriteria-bobot pada piechart
 
         if ((getHistory.rangeHargaAwal != -1) and (getHistory.rangeHargaAkhir != -1)){
             filterHargaHistory.isChecked = true

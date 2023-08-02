@@ -23,9 +23,9 @@ class adminPassSharedPref(context: Context) {
             }
         }
 
-    fun resetKept(){
-        myPreferences.editMe{
-            it.clear()
-        }
-    }
+//    fun resetKept(){
+//        myPreferences.editMe{
+//            it.clear()
+//        }
+//    }
 }

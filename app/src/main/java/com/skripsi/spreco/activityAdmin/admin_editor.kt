@@ -28,18 +28,22 @@ import java.util.*
 class admin_editor : AppCompatActivity() {
     lateinit var adapter : recycler_link_modify
 
+    //Menambahkan metode transformIntoDatePicker pada EditText untuk menampilkan DatePickerDialog
     fun EditText.transformIntoDatePicker(context: Context, format: String, maxDate: Date? = null) {
-        isFocusableInTouchMode = false
-        isClickable = true
-        isFocusable = false
+        isFocusableInTouchMode = false // Hindari edittext difocus ketika ditekan
+        isClickable = true // Agar edittext dapat diklik
+        isFocusable = false // Cara lain untuk menghindari edittext difocus ketika ditekan
 
-        val myCalendar = Calendar.getInstance()
+        val myCalendar = Calendar.getInstance() //Atur ke tanggal hari ini
         val datePickerOnDataSetListener =
             DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                // Atur tanggal sesuai dengan yang diinput pengguna
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 val sdf = SimpleDateFormat(format, Locale.ENGLISH)
+
+                //Isi Edittext dengan tanggal yang diisi
                 setText(sdf.format(myCalendar.time))
             }
 
@@ -49,6 +53,7 @@ class admin_editor : AppCompatActivity() {
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)
             ).run {
+                // Tanggal maksimum yang dapat diisi adalah tanggal hari ini
                 maxDate?.time?.also { datePicker.maxDate = it }
                 show()
             }

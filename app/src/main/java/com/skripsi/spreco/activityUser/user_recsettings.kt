@@ -39,6 +39,7 @@ class user_recsettings : AppCompatActivity() {
             "Harga" to 'C'
         )
 
+        //enabledCriteria berasal dari data.enabledCriteria (kriteria yang dipilih)
         //Tentukan tipe setiap kriteria
         enabledCriteria.forEach {
             enabledCriteriaType.add(criteriaType[it]!!)
@@ -46,10 +47,10 @@ class user_recsettings : AppCompatActivity() {
 
         var pcm : MutableList<MutableList<Double>> = mutableListOf()
 
-        //Berisi posisi matriks yang akan dijadikan tempat input
+        //Menyimpan posisi matriks yang akan dijadikan tempat input
         var inputPos : MutableList<MutableList<Int>> = mutableListOf()
 
-        //Buat template PCM untuk diisi nantinya dengan ukuran n x n
+        //Buat template PCM kosong untuk diisi nantinya dengan ukuran n x n (n = jumlah kriteria)
         for (i in 0 until enabledCriteria.size){
             var baris = mutableListOf<Double>()
             for (j in 0 until enabledCriteria.size){
@@ -72,7 +73,7 @@ class user_recsettings : AppCompatActivity() {
             }
         }
 
-        // Tambah Nilai Intensitas Kepentingan
+        // Isi Nilai Intensitas Kepentingan ke dalam PCM
         fun addNIK(pcm : MutableList<MutableList<Double>>, score : Double, i : Int, j : Int) : MutableList<MutableList<Double>>{
             // Capai indeks limit -> arahkan ke halaman selanjutnya
             if (i == j){
@@ -85,31 +86,23 @@ class user_recsettings : AppCompatActivity() {
         }
 
 
-//        @SuppressLint("SetTextI18n")
+        //Menampilkan pertanyaan selanjutnya, kriteria ke-i positif, j negatif.
         fun next(i : Int, j : Int, total : Int, criteriaList : MutableList<String>, posisi : Int){
             askCount.text = "Pertanyaan $posisi dari $total."
             var iPositif = ""
-            var iNegatif = ""
-            var jPositif = ""
             var jNegatif = ""
 
-            if (criteriaType[criteriaList[i]] == 'C'){
-                iPositif = "rendah"
-                iNegatif = "tinggi"
+            iPositif = if (criteriaType[criteriaList[i]] == 'C'){
+                "rendah"
+            } else{
+                "tinggi"
             }
-            else{
-                iPositif = "tinggi"
-                iNegatif = "rendah"
+
+            jNegatif = if (criteriaType[criteriaList[j]] == 'C'){
+                "tinggi"
+            } else{
+                "rendah"
             }
-            if (criteriaType[criteriaList[j]] == 'C'){
-                jPositif = "rendah"
-                jNegatif = "tinggi"
-            }
-            else{
-                jPositif = "tinggi"
-                jNegatif = "rendah"
-            }
-//            compareText.text = "Smartphone dengan ${criteriaList[i]} ${iPositif} dan ${criteriaList[j]} ${jNegatif} \n\n dan \n\n Smartphone dengan ${criteriaList[i]} ${iNegatif} dan ${criteriaList[j]} ${jPositif}"
             qText.text = "Bagaimana ketertarikan Anda dalam memilih Smartphone dengan ${criteriaList[i]} ${iPositif} dan ${criteriaList[j]} ${jNegatif}?"
         }
 
@@ -117,21 +110,16 @@ class user_recsettings : AppCompatActivity() {
         // Munculkan pertanyaan pertama
         next(inputPos[index_target][0], inputPos[index_target][1], inputPos.size, enabledCriteria, index_target + 1)
 
+        // Beri nilai 1/9 utk tombol pertama
         p1.setOnClickListener {
             pcm = addNIK(pcm, 1.0/9.0, inputPos[index_target][0], inputPos[index_target][1])
+            //Selama masih ada elemen PCM yang kosong, lanjut ke pertanyaan lain
             if (index_target + 1 < inputPos.size){
                 index_target += 1
                 next(inputPos[index_target][0], inputPos[index_target][1], inputPos.size, enabledCriteria, index_target + 1)
             }
-            else{
-                var db = data.getRoomHelper(applicationContext)
-
+            else{ //Jika sudah terisi semua, arahkan kembali ke menu rekomendasi
                 data.pcm = pcm
-//                val gson = Gson()
-//                var pcmJSON = gson.toJson(pcm)
-//                var res = RecPref(currentAccId, pcmJSON)
-//                db.daoRecPref().addPCM(res)
-
                 data.settingDone = true
                 Toast.makeText(this, "Pengaturan rekomendasi Anda telah disimpan.\nSilahkan lanjut ke step berikutnya.", Toast.LENGTH_SHORT).show()
                 var intent = Intent(this, MainActivityUser::class.java)
@@ -148,13 +136,8 @@ class user_recsettings : AppCompatActivity() {
                 next(inputPos[index_target][0], inputPos[index_target][1], inputPos.size, enabledCriteria, index_target + 1)
             }
             else{
-                var db = data.getRoomHelper(applicationContext)
 
                 data.pcm = pcm
-//                val gson = Gson()
-//                var pcmJSON = gson.toJson(pcm)
-//                var res = RecPref(currentAccId, pcmJSON)
-//                db.daoRecPref().addPCM(res)
 
                 data.settingDone = true
                 Toast.makeText(this, "Pengaturan rekomendasi Anda telah disimpan.\nSilahkan lanjut ke step berikutnya.", Toast.LENGTH_SHORT).show()

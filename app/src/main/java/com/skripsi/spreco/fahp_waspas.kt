@@ -36,24 +36,6 @@ object fahp_waspas {
             1.0 / 7.0 to mutableListOf(1.0 / 8.0, 1.0 / 7.0, 1.0 / 6.0),
             1.0 / 8.0 to mutableListOf(1.0 / 9.0, 1.0 / 8.0, 1.0 / 7.0),
             1.0 / 9.0 to mutableListOf(1.0 / 10.0, 1.0 / 9.0, 1.0 / 8.0)
-
-//            1.0 to mutableListOf(1.0, 1.0, 3.0),
-//            2.0 to mutableListOf(1.0, 2.0, 4.0),
-//            3.0 to mutableListOf(1.0, 3.0, 5.0),
-//            4.0 to mutableListOf(2.0, 4.0, 6.0),
-//            5.0 to mutableListOf(3.0, 5.0, 7.0),
-//            6.0 to mutableListOf(4.0, 6.0, 8.0),
-//            7.0 to mutableListOf(5.0, 7.0, 9.0),
-//            8.0 to mutableListOf(6.0, 8.0, 9.0),
-//            9.0 to mutableListOf(7.0, 9.0, 9.0),
-//            1.0 / 2.0 to mutableListOf(1.0 / 4.0, 1.0 / 2.0, 1.0),
-//            1.0 / 3.0 to mutableListOf(1.0 / 5.0, 1.0 / 3.0, 1.0),
-//            1.0 / 4.0 to mutableListOf(1.0 / 6.0, 1.0 / 4.0, 1.0 / 2.0),
-//            1.0 / 5.0 to mutableListOf(1.0 / 7.0, 1.0 / 5.0, 1.0 / 3.0),
-//            1.0 / 6.0 to mutableListOf(1.0 / 8.0, 1.0 / 6.0, 1.0 / 4.0),
-//            1.0 / 7.0 to mutableListOf(1.0 / 9.0, 1.0 / 7.0, 1.0 / 5.0),
-//            1.0 / 8.0 to mutableListOf(1.0 / 9.0, 1.0 / 8.0, 1.0 / 6.0),
-//            1.0 / 9.0 to mutableListOf(1.0 / 9.0, 1.0 / 9.0, 1.0 / 7.0)
         )
 
         for (i in matriksPC.indices) {
@@ -98,8 +80,6 @@ object fahp_waspas {
             // u
             res[i][2] =  res[i][2].pow(1.0/jumlahKriteria)
         }
-
-        //Tampilkan res dalam Logcat
 
         return res
     }
@@ -345,45 +325,6 @@ object fahp_waspas {
         // Langkah 4 : Membuat daftar ranking smartphone berdasarkan nilai Qi.
         // Proses tersebut dapat dilihat pada method di bawah ini (makeRanking()).
         return qi
-    }
-
-    fun fahpOnly(dataAlternatif: MutableList<SP_rec>,
-                 bobotKriteria: MutableList<Double>) : MutableList<Double>{
-//        hitung = FAHPOnly(convert, FAHP(data.pcm))
-        var matriks: ArrayList<ArrayList<Double>> = arrayListOf()
-        for (i in dataAlternatif){
-            var newBaris : ArrayList<Double> = arrayListOf()
-            for (criteria in enabledCriteria) {
-                when (criteria) {
-                    "RAM" -> newBaris.add(i.c_ram!!)
-                    "ROM" -> newBaris.add(i.c_rom!!)
-                    "Kapasitas baterai" -> newBaris.add(i.c_bat!!)
-                    "Kamera belakang" -> newBaris.add(i.c_mainCam!!)
-                    "Kamera depan" -> newBaris.add(i.c_selfie!!)
-                    "Ukuran layar" -> newBaris.add(i.c_layar!!)
-                    "Harga" -> newBaris.add(i.c_harga!!)
-                }
-            }
-            matriks.add(newBaris)
-        }
-        //transpos. Ini dilakukan agar setiap baris berisi nilai kriteria tertentu untuk semua data yang ada.
-        matriks = fahp_waspas.transposeMatriks(matriks)
-        //Bobot kriteria sudah diurutkan, sehingga i tidak perlu diperhatikan
-        for (i in 0 until matriks.size){
-            for (o in 0 until matriks[i].size){
-                matriks[i][o] *= bobotKriteria[i]
-            }
-        }
-        //transpos kembali
-        matriks = transposeMatriks(matriks)
-
-        //Jumlahkan setiap array
-        var res = mutableListOf<Double>()
-        for (i in matriks){
-            // Setelah dilakukan percobaan dengan smartphone berspesifikasi tertinggi, ditemukan nilai maksimumnya adalah 500.
-            res.add((i.sum() / 500.0) * 100) // Agar rentang hasilnya 0 dan 1.
-        }
-        return res
     }
 
     fun makeRanking(dataAlt : MutableList<Smartphone>, qiList : MutableList<Double>) : MutableList<SP_rank>{

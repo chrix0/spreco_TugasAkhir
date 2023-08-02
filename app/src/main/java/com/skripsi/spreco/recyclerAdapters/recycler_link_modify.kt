@@ -25,7 +25,7 @@ class recycler_link_modify (data : MutableList<SPSource>, curContext : Context ,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myHolder {
         val inflate = LayoutInflater.from(parent.context).inflate(R.layout.recycler_link_modify,parent,false)
-        return myHolder(inflate)
+        return myHolder(inflate) //menyediakan view
     }
 
     override fun onBindViewHolder(holder: myHolder, position: Int) {

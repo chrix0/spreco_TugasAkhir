@@ -40,7 +40,7 @@ class login : AppCompatActivity() {
 
         //Jika terisi, kode setelah baris ini akan dijalankan.
         //Untuk menghindari adanya whitespace pada teks EditText
-        val disableSpace =
+        val disableSpace = //Cari semua karakter whitespace
             InputFilter { source, start, end, _, _, _ ->
                 for (i in start until end) {
                     if (Character.isWhitespace(source[i])) {
@@ -49,40 +49,26 @@ class login : AppCompatActivity() {
                 }
                 null
             }
-        usernameLogin.filters = arrayOf(disableSpace)
+        usernameLogin.filters = arrayOf(disableSpace) //filter semua karakter whitespace
         passwordLogin.filters = arrayOf(disableSpace)
 
 
         var db = data.getRoomHelper(applicationContext)
 
-
-        // Kode ini diambil dari passSetting. Hanya digunakan untuk pengujian saja.
-        // Untuk sidang nanti, commentkan kode bagian ini.
-
-        // Pilih dataset Smartphone yang digunakan (original / test)
-        // spList.spListType dapat diganti pada file dengan path "util/spList.kt"
-//        if(spList.spListType == "original"){
-//            db.daoSPSource().deleteAllSPSource() //Untuk testing saja jangan lupa hapus
-//            db.daoSP().deleteAllSP() //Untuk testing saja jangan lupa hapus
-//            db.daoSP().addAllSP(spList.list_sp)
-//            db.daoSPSource().addAllSource(spSourceList.list_source)
-//        }
-//        else{
-//            db.daoSPSource().deleteAllSPSource() //Hapus semua link untuk menghindari foreign key error
-//            db.daoSP().deleteAllSP() //Reset isi tabel Smartphone
-//            db.daoSP().addAllSP(spList.list_sp_test) //Ganti dengan list untuk testing
-//        }
-
+        //Ketika tombol login ditekan
         loginButton.setOnClickListener {
             var userName = usernameLogin.text.toString()
             var password = passwordLogin.text.toString()
 
+            //Periksa apakah username atau password kosong
             if (userName.isEmpty()||password.isEmpty()) {
                 Toast.makeText(this, "Username dan password harus diisi.", Toast.LENGTH_SHORT).show()
             }
-            else {
+            else { //Jika keduanya terisi
                 var found = false
+                //Cari apakah terdapat akun dengan kombinasi username dan password yang diinput
                 var getAccount = db.daoAccount().getAcc(userName, password)
+                //Jika ada, ubah currentAccId
                 if (getAccount.isNotEmpty()) {
                     found = true
                     data.currentAccId = getAccount[0].idAcc
@@ -90,6 +76,8 @@ class login : AppCompatActivity() {
                     getAccount[0].terakhirLogin = getCurrentDateTime()
                     db.daoAccount().updateAcc(getAccount[0]) // Update account
                 }
+
+                //Lakukan aksi tertentu berdasarkan hasil pencarian yang dilakukan
                 if (found) {
                     Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show()
                     data.curRole = 'C'

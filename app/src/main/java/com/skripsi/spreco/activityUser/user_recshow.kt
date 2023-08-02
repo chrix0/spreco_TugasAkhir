@@ -99,13 +99,6 @@ class user_recshow : AppCompatActivity() {
             return@setOnEditorActionListener true
         }
 
-        // Tombol sort
-        var popup = PopupMenu(this, sortButton)
-        popup.menuInflater.inflate(R.menu.menu_sort_rec, popup.menu)
-        sortButton.setOnClickListener{
-            popup.show()
-        }
-
         fun showModifiedRec(temp : List<SP_rank>){
             adapter = recycler_recshow_adapter(temp){
                 val info = Intent(this, user_spdetail::class.java)
@@ -119,12 +112,20 @@ class user_recshow : AppCompatActivity() {
             }
         }
 
+
+        // Tombol sort
+        var popup = PopupMenu(this, sortButton)
+        popup.menuInflater.inflate(R.menu.menu_sort_rec, popup.menu)
+        sortButton.setOnClickListener{
+            popup.show()
+        }
+
         popup.setOnMenuItemClickListener {
             return@setOnMenuItemClickListener when(it.itemId){
                 R.id.harga_des->{
                     temp.sortBy { it.obj_sp.harga }
                     temp.reverse()
-                    showModifiedRec(temp)
+                    showModifiedRec(temp) //Menampilkan daftar yang sudah diurutkan
                     true
                 }
                 R.id.harga_asc ->{
@@ -175,9 +176,11 @@ class user_recshow : AppCompatActivity() {
         return res
     }
 
+    // Proses FAHP-WASPAS dilakukan secara Async, karena terdapat kemungkinan proses ini
+    // akan berjalan dalam waktu yang lama..
     inner class Async : AsyncTask<Void, Void, Unit>(){
-        //Beri tahu user bahwa rekomendasi sedang diproses..
-        private var startTime: Long = 0
+        // Beri tahu user bahwa rekomendasi sedang diproses..
+        private var startTime: Long = 0 //Set waktu awal 0 milisekon
         var dialog = ProgressDialog(this@user_recshow).apply {
             setMessage("Rekomendasi Anda sedang diproses.\nMohon tunggu.")
             setProgressStyle(ProgressDialog.STYLE_SPINNER)
@@ -204,30 +207,27 @@ class user_recshow : AppCompatActivity() {
                 makeRanking(listDiproses, hitung).toMutableList()
             }
 
-//            var sorted_wsm_wpm_waspas = data.wsm_wpm_waspas.sortedByDescending { it[2] }
-//            var take = sorted_wsm_wpm_waspas.take(data.maxDataRec).toMutableList()
-//            Log.i("waspas", take.toString())
-
             return null
         }
         override fun onPreExecute() {
             super.onPreExecute()
-            startTime = System.currentTimeMillis()
+            startTime = System.currentTimeMillis() //Set waktu sekarang sebagai waktu awal
             pcm = data.pcm
             dialog.show()
         }
         override fun onPostExecute(result: Unit?) {
             super.onPostExecute(result)
+//            Kurangkan waktu awal dengan waktu akhir
             val executionTime = (System.currentTimeMillis() - startTime) / 1000.0
-            val decimalFormat = DecimalFormat("#.##")
+            val decimalFormat = DecimalFormat("#.##") //Bulatkan hasil pengurangan menjadi 2 angka di belakang koma
             val roundedExecutionTime = decimalFormat.format(executionTime)
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
 
-            temp.addAll(hasil) //Akan dipakai dalam pencarian nantinya.
+            temp.addAll(hasil) //Akan dipakai jika pengguna ingin melakukan pencarian nantinya.
 
-            if(hasil.isEmpty()){
+            if(hasil.isEmpty()){ //Kalau tidak ada hasil
                 nothing_text.text = "Tidak ada produk yang dapat direkomendasikan."
                 nothing_text.visibility = View.VISIBLE
             }
@@ -251,7 +251,7 @@ class user_recshow : AppCompatActivity() {
             obj_history = recHistory(0, data.currentAccId, hasilToJSON, getCurrentDateTime(), data.hargaRangeBawah, data.hargaRangeAtas, data.maxDataRec, bobotKriteriaToJSON, pcmJSON)
             db.daoRecHistory().addHistory(obj_history) //Simpan ke RecHistory
 
-            //Reset..
+            //Reset semua nilai ke semula
             data.enabledCriteria = mutableListOf<String>()
             data.enabledCriteriaType = mutableListOf<Char>()
             data.filterHargaChecked = false //Temporary. Hanya pengaturan toggle kriteria yang disimpan
